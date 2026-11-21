@@ -225,9 +225,12 @@ LAYOUT = '''<!DOCTYPE html>
 <style>{{css}}</style>
 </head>
 <body>
+<a href="#main" class="ss-skip">Skip to content</a>
 <div id="top" class="min-h-screen bg-background text-foreground">
 {{header}}
+<main id="main" tabindex="-1">
 {{content}}
+</main>
 {{footer}}
 </div>
 <script src="@@file:config.js@@" defer></script>

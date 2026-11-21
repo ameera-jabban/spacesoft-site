@@ -7,10 +7,18 @@ document.querySelectorAll('[data-lang-link]').forEach(a => a.addEventListener('c
 }));
 
 /* ===== WhatsApp floating button ===== */
-const waFab=document.getElementById('waFab'), waBtn=document.getElementById('waBtn');
-waBtn.addEventListener('click',e=>{e.stopPropagation();const o=waFab.classList.toggle('open');waBtn.setAttribute('aria-expanded',o)});
-document.addEventListener('click',e=>{if(!waFab.contains(e.target)){waFab.classList.remove('open');waBtn.setAttribute('aria-expanded',false)}});
-document.addEventListener('keydown',e=>{if(e.key==='Escape')waFab.classList.remove('open')});
+const waFab = document.getElementById('waFab'), waBtn = document.getElementById('waBtn');
+const waPanel = document.getElementById('waPanel');
+const setWa = (open, focusBtn) => {
+  waFab.classList.toggle('open', open); waBtn.setAttribute('aria-expanded', open);
+  waPanel.inert = !open;                       // closed panel: out of the tab order and the accessibility tree
+  if (open) waFab.querySelector('.ss-wa-item')?.focus();
+  else if (focusBtn) waBtn.focus();
+};
+waBtn.addEventListener('click', e => { e.stopPropagation(); setWa(!waFab.classList.contains('open')); });
+document.addEventListener('click', e => { if (waFab.classList.contains('open') && !waFab.contains(e.target)) setWa(false); });
+waFab.addEventListener('keydown', e => { if (e.key === 'Escape' && waFab.classList.contains('open')) { e.stopPropagation(); setWa(false, true); } });
+waFab.addEventListener('focusout', e => { if (waFab.classList.contains('open') && !waFab.contains(e.relatedTarget)) setWa(false); });
 
 /* ===== Showcase video: load on demand, never autoplay with reduced motion ===== */
 (function(){
@@ -35,9 +43,28 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')waFab.classList.remo
 const hdr = document.getElementById('siteHeader');
 const onScroll = () => hdr.classList.toggle('scrolled', scrollY > 24);
 addEventListener('scroll', onScroll, { passive: true }); onScroll();
-const mm = document.getElementById('mobileMenu');
-document.getElementById('menuBtn').addEventListener('click', () => mm.classList.toggle('hidden'));
-mm.querySelectorAll('a').forEach(a => a.addEventListener('click', () => mm.classList.add('hidden')));
+const mm = document.getElementById('mobileMenu'), menuBtn = document.getElementById('menuBtn');
+const menuOpen = () => !mm.classList.contains('hidden');
+const setMenu = (open, focusBtn) => {
+  mm.classList.toggle('hidden', !open); menuBtn.setAttribute('aria-expanded', open);
+  if (open) mm.querySelector('a')?.focus();
+  else if (focusBtn) menuBtn.focus();
+};
+menuBtn.addEventListener('click', () => setMenu(!menuOpen()));
+mm.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setMenu(false)));
+document.addEventListener('keydown', e => {
+  if (!menuOpen()) return;
+  if (e.key === 'Escape') { setMenu(false, true); return; }
+  if (e.key !== 'Tab') return;
+  // keep focus inside the open menu (menu button + menu links)
+  const items = [menuBtn, ...mm.querySelectorAll('a')].filter(el => el.offsetParent !== null);
+  const first = items[0], last = items[items.length - 1];
+  if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+  else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+});
+document.addEventListener('click', e => { if (menuOpen() && !mm.contains(e.target) && !menuBtn.contains(e.target)) setMenu(false); });
+// the menu is hidden at desktop widths; reset its state when the layout changes
+matchMedia('(min-width: 1280px)').addEventListener('change', e => { if (e.matches && menuOpen()) setMenu(false); });
 
 /* ===== reveal on scroll ===== */
 const io = new IntersectionObserver(es => es.forEach(e => {

@@ -138,3 +138,9 @@ html[dir=rtl] .ss-wa-panel{transform-origin:bottom left}
   .sf-wrap{padding-bottom:84px}
   #demo{padding-bottom:6rem}
 }
+
+/* ===== Accessibility ===== */
+.ss-skip{position:fixed;top:10px;inset-inline-start:10px;z-index:100;padding:10px 16px;border-radius:10px;background:var(--primary);color:var(--primary-foreground);font-weight:600;font-size:14px;transform:translateY(-160%);transition:transform .15s}
+.ss-skip:focus{transform:none;outline:2px solid var(--foreground);outline-offset:2px}
+#main:focus{outline:none}
+:focus-visible{outline:2px solid var(--primary);outline-offset:2px}

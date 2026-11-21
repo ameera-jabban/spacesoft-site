@@ -201,7 +201,8 @@
   "© 2026 Space Soft ERP.": "© 2026 Space Soft ERP.",
   "All rights reserved.": "جميع الحقوق محفوظة.",
   "Terms of Use": "شروط الاستخدام",
-  "Privacy Policy": "سياسة الخصوصية"
+  "Privacy Policy": "سياسة الخصوصية",
+  "Skip to content": "انتقل إلى المحتوى"
  },
  "attr": {
   "Language": "اللغة",
@@ -212,6 +213,8 @@
   "Space Soft ERP dashboard": "لوحة تحكم Space Soft ERP",
   "Space Soft ERP product walkthrough": "جولة في نظام Space Soft ERP",
   "Instagram": "إنستغرام",
-  "Facebook": "فيسبوك"
+  "Facebook": "فيسبوك",
+  "Menu": "القائمة",
+  "Primary": "التنقل الرئيسي"
  }
 }
