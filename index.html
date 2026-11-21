@@ -114,7 +114,27 @@ html[dir="rtl"] .ss-wa{align-items:flex-start}
 .ss-hp{display:none!important}
 .ss-spin{display:none;width:18px;height:18px;border-radius:50%;border:2px solid currentColor;border-inline-end-color:transparent;animation:ss-rot .7s linear infinite}
 #demoSubmit[aria-busy="true"] .ss-spin{display:inline-block}#demoSubmit[aria-busy="true"]>svg{display:none}#demoSubmit[aria-busy="true"]{cursor:progress;opacity:.8}
-@keyframes ss-rot{to{transform:rotate(1turn)}}</style>
+@keyframes ss-rot{to{transform:rotate(1turn)}}
+
+/* ===== Responsive fixes ===== */
+/* RTL: `html[dir=rtl] .reveal-left/right` (0,2,1) outranked `.reveal.is-visible` (0,2,0), so in Arabic the
+   Platform and Security columns stayed shifted 36px and were clipped by their overflow:hidden section. */
+html[dir] .reveal.is-visible{opacity:1;transform:none}
+/* 1024–1279px: the desktop nav only appears at 1280px (xl) while the menu button hid at 1024px (lg),
+   leaving the section links unreachable. Keep the menu button until the nav shows. */
+@media (min-width:1024px) and (max-width:1279.98px){
+  #menuBtn{display:inline-flex}
+  #mobileMenu:not(.hidden){display:block}
+}
+/* Phones: less vertical padding between sections, roomier form card. */
+@media (max-width:639.98px){
+  section.py-28{padding-top:4.5rem;padding-bottom:4.5rem}
+  .hx{padding-top:120px}
+  #demo .md\:p-10{padding:1.25rem}
+}
+@media (max-width:359.98px){
+  #security .grid-cols-2{grid-template-columns:1fr}
+}</style>
 </head>
 <body>
 <div id="top" class="min-h-screen bg-background text-foreground">
