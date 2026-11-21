@@ -65,7 +65,7 @@ def translate(markup, ar):
         if key in text:
             lead = raw[:len(raw) - len(raw.lstrip())]; trail = raw[len(raw.rstrip()):]
             return '>' + lead + html.escape(text[key], quote=False) + trail + '<'
-        if re.search(r'[A-Za-z]{3}', key) and key not in keep and not re.search(r'@|\.com|\{\{', key): missing.add(key)
+        if re.search(r'[A-Za-z]{3}', key) and key not in keep and not re.search(r'@|\.com\b|\{\{', key): missing.add(key)
         return m.group(0)
     def tattr(m):
         v = html.unescape(m.group(2))
