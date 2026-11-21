@@ -145,7 +145,7 @@
     }
     out.lines.innerHTML = h;
 
-    let o = `<p class="ss-onetime-title">${T.oneTime}</p>`;
+    let o = '';
     for (const a of r.activation) o += row(T.activation(a.qty, money(a.unitCents)), a.confirmed ? ltr(money(a.totalCents)) : T.pending, a.confirmed ? '' : 'ss-pending');
     o += row(T.impl, T.implFrom(ltr(money(r.implementation.fromCents))), 'ss-pending');
     out.oneTime.innerHTML = o;
