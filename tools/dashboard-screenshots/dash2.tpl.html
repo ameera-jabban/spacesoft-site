@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="{{lang}}" dir="{{dir}}">
+<head>
+<meta charset="UTF-8">
+<style>
+@font-face{font-family:Plex;src:url(node_modules/@fontsource/ibm-plex-sans-arabic/files/ibm-plex-sans-arabic-arabic-400-normal.woff2);font-weight:400}
+@font-face{font-family:Plex;src:url(node_modules/@fontsource/ibm-plex-sans-arabic/files/ibm-plex-sans-arabic-arabic-500-normal.woff2);font-weight:500}
+@font-face{font-family:Plex;src:url(node_modules/@fontsource/ibm-plex-sans-arabic/files/ibm-plex-sans-arabic-arabic-600-normal.woff2);font-weight:600}
+@font-face{font-family:Plex;src:url(node_modules/@fontsource/ibm-plex-sans-arabic/files/ibm-plex-sans-arabic-arabic-700-normal.woff2);font-weight:700}
+@font-face{font-family:Inter;src:url(node_modules/@fontsource/inter/files/inter-latin-400-normal.woff2);font-weight:400}
+@font-face{font-family:Inter;src:url(node_modules/@fontsource/inter/files/inter-latin-600-normal.woff2);font-weight:500 600}
+@font-face{font-family:Inter;src:url(node_modules/@fontsource/inter/files/inter-latin-700-normal.woff2);font-weight:700}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Inter,Plex,sans-serif;background:#f3f5f7;color:#101828;width:1440px;-webkit-font-smoothing:antialiased}
+.app{display:flex;min-height:900px}
+/* sidebar */
+.side{width:256px;background:#16181b;color:#c4c9d1;flex:none;display:flex;flex-direction:column}
+.brand{display:flex;align-items:center;justify-content:space-between;height:64px;padding:0 20px;border-bottom:1px solid #23262a}
+.brand img{height:28px;filter:brightness(1.6) saturate(1.1)}
+.burger{width:18px;display:grid;gap:4px}.burger i{height:2px;background:#5b6470;border-radius:2px}.burger i:nth-child(2){width:70%}.burger i:nth-child(3){width:45%}
+.sec{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:#5b6470;padding:18px 22px 8px;font-weight:600}
+html[dir=rtl] .sec{letter-spacing:0;font-size:11.5px}
+.nav{padding:0 10px}
+.nav a{display:flex;align-items:center;gap:12px;padding:9px 12px;margin:2px 0;border-radius:8px;font-size:14px;color:#c4c9d1}
+.nav a svg{width:18px;height:18px;flex:none;color:#8b939e}
+.nav a .chev{margin-inline-start:auto;width:13px;height:13px;color:#4b525c}
+.nav a.on{background:#1f8a70;color:#fff;font-weight:600}
+.nav a.on svg{color:#fff}
+.sfoot{margin-top:auto;padding:16px;border-top:1px solid #23262a;display:flex;gap:10px;align-items:center}
+.av{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#1f8a70,#2563eb);display:grid;place-items:center;color:#fff;font-size:13px;font-weight:700;font-family:Inter}
+.sfoot p{font-size:12.5px;color:#e5e7eb;font-weight:600}.sfoot small{display:block;font-size:11px;color:#6b7480;font-weight:400}
+/* top */
+.main{flex:1;min-width:0}
+.top{height:64px;background:#fff;border-bottom:1px solid #e6e9ed;display:flex;align-items:center;gap:14px;padding:0 28px}
+.search{flex:1;max-width:420px;display:flex;align-items:center;gap:8px;background:#f3f5f7;border:1px solid #e6e9ed;border-radius:9px;padding:8px 12px;font-size:13px;color:#98a2b3}
+.search svg{width:15px;height:15px}
+.search kbd{margin-inline-start:auto;font-family:Inter;font-size:11px;border:1px solid #d9dde3;border-radius:5px;padding:0 6px;color:#667085;background:#fff}
+.tr{margin-inline-start:auto;display:flex;align-items:center;gap:16px;font-size:12.5px;color:#475467}
+.tr .bell{position:relative;width:18px;height:18px;color:#475467}.tr .bell i{position:absolute;top:-2px;inset-inline-end:-2px;width:7px;height:7px;border-radius:50%;background:#ef4444;border:1.5px solid #fff}
+.lang{display:flex;align-items:center;gap:5px;border:1px solid #e6e9ed;border-radius:7px;padding:4px 8px;font-weight:600;font-family:Inter}
+.wrap{padding:24px 28px 30px}
+.head{display:flex;align-items:flex-end;justify-content:space-between;gap:20px}
+h1{font-size:24px;font-weight:700;letter-spacing:-.01em}
+html[dir=rtl] h1{letter-spacing:0}
+.sub{font-size:13px;color:#667085;margin-top:4px}
+.chips{display:flex;gap:8px}
+.chip{display:inline-flex;align-items:center;gap:7px;background:#fff;border:1px solid #e3e7ec;border-radius:9px;padding:7px 11px;font-size:12.5px;color:#667085;box-shadow:0 1px 2px rgba(16,24,40,.04)}
+.chip b{color:#101828;font-weight:600}.chip svg{width:14px;height:14px;color:#1f8a70}
+.chip .dd{width:11px;height:11px;color:#98a2b3}
+/* kpis */
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:20px}
+.card{background:#fff;border:1px solid #e8ebef;border-radius:14px;box-shadow:0 1px 2px rgba(16,24,40,.04)}
+.kpi{display:flex;gap:14px;padding:18px 18px 16px}
+.kic{width:42px;height:42px;border-radius:11px;display:grid;place-items:center;flex:none}
+.kic svg{width:20px;height:20px}
+.kb{min-width:0;flex:1}
+.kl{font-size:13px;color:#475467;font-weight:500}
+.kv{margin-top:6px;display:flex;align-items:baseline;gap:6px;direction:ltr;justify-content:flex-end}
+html[dir=ltr] .kv{justify-content:flex-start}
+.kv span{font-family:Inter;font-size:25px;font-weight:700;letter-spacing:-.02em;color:#101828;font-variant-numeric:tabular-nums}
+.kv small{font-family:Inter;font-size:11.5px;font-weight:600;color:#98a2b3}
+.kn{font-size:12px;color:#8a94a3;margin-top:6px;padding-top:8px;border-top:1px dashed #edf0f3}
+.kn b{color:#344054;font-family:Inter;font-weight:600}.kn{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* row 2 */
+.row2{display:grid;grid-template-columns:2.05fr 1fr;gap:14px;margin-top:14px}
+.ph{display:flex;align-items:center;justify-content:space-between;padding:16px 18px 0;gap:12px}
+.ph h3{font-size:15px;font-weight:700;display:flex;gap:8px;align-items:center}
+.ph h3 svg{width:17px;height:17px;color:#1f8a70}
+.tabs{display:flex;background:#f3f5f7;border:1px solid #e6e9ed;border-radius:8px;padding:3px;font-size:12px}
+.tabs span{padding:4px 12px;border-radius:6px;color:#667085;font-weight:500}.tabs .on{background:#fff;color:#101828;box-shadow:0 1px 2px rgba(16,24,40,.08)}
+.legend{display:flex;gap:18px;font-size:12.5px;color:#475467;padding:10px 18px 0}
+.legend i{display:inline-block;width:9px;height:9px;border-radius:3px;margin-inline-end:6px;vertical-align:0}
+.chart{padding:8px 16px 10px}
+.cfl{padding:14px 18px 18px;display:grid;gap:10px}
+.cfl .muted{font-size:12.5px;color:#98a2b3;margin-top:-4px}
+.cfr{display:flex;align-items:center;gap:12px;border:1px solid #edf0f3;border-radius:11px;padding:12px 14px}
+.cfr .d{width:34px;height:34px;border-radius:9px;display:grid;place-items:center;flex:none}
+.cfr .d svg{width:17px;height:17px}
+.cfr span{font-size:12.5px;color:#667085;display:block}
+.cfr b{font-family:Inter;font-size:19px;font-weight:700;letter-spacing:-.01em;direction:ltr;display:block}
+html[dir=rtl] .cfr b{text-align:right}
+.cfr .bar{margin-inline-start:auto;width:70px;height:6px;border-radius:99px;background:#eef1f4;overflow:hidden}
+.cfr .bar i{display:block;height:100%;border-radius:99px}
+.cfr.net{background:#f2faf7;border-color:#cfe9e0}
+/* row 3 */
+.row3{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
+.tot{font-size:12.5px;color:#667085}.tot b{font-family:Inter;color:#101828;font-size:15px;margin-inline-start:6px}
+.seg{display:flex;height:8px;border-radius:99px;overflow:hidden;margin:16px 18px 0;gap:2px}
+.seg i{display:block;height:100%}
+.rgrid{display:grid;grid-template-columns:repeat(3,1fr);padding:14px 18px 18px;gap:10px}
+.rgrid div{border-inline-start:1px solid #edf0f3;padding-inline-start:12px}
+.rgrid div:first-child{border:0;padding-inline-start:0}
+.rgrid span{font-size:12px;color:#667085;display:flex;align-items:center;gap:6px}
+.rgrid span i{width:8px;height:8px;border-radius:2px;display:inline-block}
+.rgrid b{display:block;font-family:Inter;font-size:17px;font-weight:700;margin-top:4px;direction:ltr;font-variant-numeric:tabular-nums}
+html[dir=rtl] .rgrid b{text-align:right}
+.warn{color:#b45309}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="side">
+    <div class="brand"><img src="logo.png" alt=""><div class="burger"><i></i><i></i><i></i></div></div>
+    <nav class="nav" style="margin-top:12px">{{nav}}</nav>
+    <div class="sfoot"><div class="av">FD</div><div><p>{{fdn}}</p><small>{{grp}}</small></div></div>
+  </aside>
+  <main class="main">
+    <div class="top">
+      <div class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg><span></span><kbd>Ctrl K</kbd></div>
+      <div class="tr">
+        <span style="direction:ltr">{{user}}</span>
+        <div class="bell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg><i></i></div>
+        <span class="lang"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20"/></svg>{{ui}}</span>
+      </div>
+    </div>
+    <div class="wrap">
+      <div class="head">
+        <div><h1>{{title}}</h1><p class="sub">{{date}}</p></div>
+        <div class="chips">
+          <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 9h1M14 9h1M9 13h1M14 13h1M9 17h1M14 17h1"/></svg>{{company}}: <b>{{companyv}}</b><svg class="dd" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m6 9 6 6 6-6"/></svg></span>
+          <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>{{branch}}: <b>{{branchv}}</b><svg class="dd" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m6 9 6 6 6-6"/></svg></span>
+          <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M14.8 9a2.5 2.5 0 0 0-2.3-1.5h-1a2.3 2.3 0 0 0 0 4.5h1a2.3 2.3 0 0 1 0 4.5h-1A2.5 2.5 0 0 1 9.2 15M12 6v1.5M12 16.5V18"/></svg>{{cur}}: <b>USD</b><svg class="dd" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m6 9 6 6 6-6"/></svg></span>
+        </div>
+      </div>
+
+      <div class="kpis">{{kpis}}</div>
+
+      <div class="row2">
+        <div class="card">
+          <div class="ph"><h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M7 16V10M12 16V6M17 16v-4"/></svg>{{fo}}</h3>
+            <div class="tabs"><span class="on">{{m}}</span><span>{{q}}</span><span>{{y}}</span></div></div>
+          <div class="legend"><span><i style="background:#1f8a70"></i>{{ls}}</span><span><i style="background:#bfe0d6"></i>{{lp}}</span></div>
+          <div class="chart">{{chart}}</div>
+        </div>
+        <div class="card">
+          <div class="ph"><h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/></svg>{{cf}}</h3></div>
+          <div class="cfl">
+            <p class="muted">{{thism}}</p>
+            <div class="cfr"><div class="d" style="background:#e7f4ef;color:#15803d"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 19V5M5 12l7-7 7 7"/></svg></div><div><span>{{cin}}</span><b style="color:#15803d">3,124,600.00</b></div><div class="bar"><i style="width:100%;background:#22a06b"></i></div></div>
+            <div class="cfr"><div class="d" style="background:#fdecec;color:#b42318"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M19 12l-7 7-7-7"/></svg></div><div><span>{{cout}}</span><b style="color:#b42318">2,287,450.00</b></div><div class="bar"><i style="width:73%;background:#ef6b5f"></i></div></div>
+            <div class="cfr net"><div class="d" style="background:#1f8a70;color:#fff"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div><div><span>{{net}}</span><b>837,150.00</b></div><div class="bar"><i style="width:27%;background:#1f8a70"></i></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row3">{{rc_card}}{{rs_card}}</div>
+    </div>
+  </main>
+</div>
+</body>
+</html>

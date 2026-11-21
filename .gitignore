@@ -1,0 +1,7 @@
+node_modules/
+.DS_Store
+Thumbs.db
+*.log
+tools/dashboard-screenshots/*.html
+!tools/dashboard-screenshots/dash2.tpl.html
+tools/dashboard-screenshots/*.png
