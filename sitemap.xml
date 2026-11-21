@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://spacesofterp.com/</loc>
+    <lastmod>2026-11-21</lastmod>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://spacesofterp.com/"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://spacesofterp.com/ar/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://spacesofterp.com/"/>
+  </url>
+  <url>
+    <loc>https://spacesofterp.com/ar/</loc>
+    <lastmod>2026-11-21</lastmod>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://spacesofterp.com/"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://spacesofterp.com/ar/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://spacesofterp.com/"/>
+  </url>
+  <url>
+    <loc>https://spacesofterp.com/pricing/</loc>
+    <lastmod>2026-11-21</lastmod>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://spacesofterp.com/pricing/"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://spacesofterp.com/ar/pricing/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://spacesofterp.com/pricing/"/>
+  </url>
+  <url>
+    <loc>https://spacesofterp.com/ar/pricing/</loc>
+    <lastmod>2026-11-21</lastmod>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://spacesofterp.com/pricing/"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://spacesofterp.com/ar/pricing/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://spacesofterp.com/pricing/"/>
+  </url>
+</urlset>
