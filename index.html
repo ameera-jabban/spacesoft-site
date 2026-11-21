@@ -98,7 +98,7 @@ html[dir="rtl"] .ss-wa{align-items:flex-start}
 <div id="top" class="min-h-screen bg-background text-foreground" lang="en" data-lang="en">
 <header id="siteHeader" class="fixed inset-x-0 top-0 z-50 transition-all duration-500 border-b border-transparent">
 <div class="mx-auto flex h-20 max-w-7xl items-center justify-between gap-6 px-6"><a href="#top" class="flex shrink-0 items-center">
-<img src="assets/spacesoft-logo.png" alt="Space Soft ERP" class="h-10 w-auto md:h-12"></a>
+<picture><source srcset="assets/spacesoft-logo.webp" type="image/webp"><img src="assets/spacesoft-logo.png" alt="Space Soft ERP" width="480" height="109" decoding="async" class="h-10 w-auto md:h-12"></picture></a>
 <nav class="hidden items-center gap-1 xl:flex"><a href="#platform" class="rounded-full px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary/60 hover:text-foreground">Platform</a><a href="#modules" class="rounded-full px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary/60 hover:text-foreground">Modules</a><a href="#industries" class="rounded-full px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary/60 hover:text-foreground">Industries</a><a href="#security" class="rounded-full px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary/60 hover:text-foreground">Security</a><a href="#faq" class="rounded-full px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary/60 hover:text-foreground">FAQ</a>
 </nav>
 <div class="hidden items-center gap-2 lg:flex">
@@ -139,8 +139,8 @@ html[dir="rtl"] .ss-wa{align-items:flex-start}
 <div class="hero-shot-frame">
 <div class="hero-shot-bar" aria-hidden="true"><i></i><i></i><i></i><span dir="ltr">erp.spacesofterp.com</span>
 </div>
-<img class="shot-en" src="assets/dashboard-en.webp" width="1800" height="1125" alt="Space Soft ERP dashboard">
-<img class="shot-ar" src="assets/dashboard-ar.webp" width="1800" height="1125" alt="لوحة تحكم Space Soft ERP">
+<img class="shot-en" src="assets/dashboard-en.webp" width="1800" height="1125" fetchpriority="high" decoding="async" alt="Space Soft ERP dashboard">
+<img class="shot-ar" src="assets/dashboard-ar.webp" width="1800" height="1125" loading="lazy" decoding="async" alt="لوحة تحكم Space Soft ERP">
 </div>
 </div>
 </div>
@@ -165,7 +165,7 @@ html[dir="rtl"] .ss-wa{align-items:flex-start}
 </div>
 </section>
 <section id="platform" class="relative scroll-mt-24 overflow-hidden border-y border-border py-28">
-<img src="assets/section-network.webp" alt="" aria-hidden="true" class="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-55">
+<img src="assets/section-network.webp" alt="" aria-hidden="true" width="1586" height="992" loading="lazy" decoding="async" class="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-55">
 <div class="pointer-events-none absolute inset-0 bg-background/55" aria-hidden="true">
 </div>
 <div class="relative mx-auto grid max-w-7xl items-start gap-12 px-6 lg:grid-cols-[54fr_46fr] lg:items-center lg:gap-14">
@@ -185,7 +185,7 @@ html[dir="rtl"] .ss-wa{align-items:flex-start}
 </div>
 </div>
 <div class="reveal reveal-right  relative aspect-video overflow-hidden rounded-3xl border border-border shadow-[var(--shadow-elevated)]" style="transition-delay: 0ms;">
-<video class="absolute inset-0 h-full w-full object-contain" src="assets/spacesoft-showcase.mp4" poster="assets/poster.jpg" autoplay muted loop playsinline preload="auto"></video>
+<video id="showcase" class="absolute inset-0 h-full w-full object-contain" poster="assets/poster.webp" width="1280" height="720" muted loop playsinline preload="none" aria-label="Space Soft ERP product walkthrough"><!--video-sources--><source data-src="assets/spacesoft-showcase.mp4" type="video/mp4"></video>
 </div>
 </div>
 </section>
@@ -389,7 +389,7 @@ html[dir="rtl"] .ss-wa{align-items:flex-start}
 </div>
 </section>
 <section id="security" class="relative scroll-mt-24 overflow-hidden border-y border-border py-28">
-<img src="assets/section-network.webp" alt="" aria-hidden="true" class="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-45">
+<img src="assets/section-network.webp" alt="" aria-hidden="true" width="1586" height="992" loading="lazy" decoding="async" class="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-45">
 <div class="pointer-events-none absolute inset-0 bg-background/65" aria-hidden="true">
 </div>
 <div class="relative mx-auto grid max-w-7xl gap-16 px-6 lg:grid-cols-2 lg:items-center">
@@ -579,7 +579,7 @@ html[dir="rtl"] .ss-wa{align-items:flex-start}
 <div class="sf-grid">
 <div class="sf-brand">
 <a aria-label="Space Soft ERP" href="#top">
-<img src="assets/spacesoft-logo.png" alt="Space Soft ERP" class="sf-logo"></a>
+<picture><source srcset="assets/spacesoft-logo.webp" type="image/webp"><img src="assets/spacesoft-logo.png" alt="Space Soft ERP" width="480" height="109" loading="lazy" decoding="async" class="sf-logo"></picture></a>
 <p class="sf-tagline">SPACE to Grow. Trust to Lead.</p>
 <p class="sf-desc">Unified ERP solutions for finance, operations, inventory, projects and business intelligence.</p>
 <a class="sf-mail" href="mailto:Info@spacesofterp.com"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg><span dir="ltr">Info@spacesofterp.com</span></a>
@@ -761,6 +761,25 @@ const waFab=document.getElementById('waFab'), waBtn=document.getElementById('waB
 waBtn.addEventListener('click',e=>{e.stopPropagation();const o=waFab.classList.toggle('open');waBtn.setAttribute('aria-expanded',o)});
 document.addEventListener('click',e=>{if(!waFab.contains(e.target)){waFab.classList.remove('open');waBtn.setAttribute('aria-expanded',false)}});
 document.addEventListener('keydown',e=>{if(e.key==='Escape')waFab.classList.remove('open')});
+
+/* ===== Showcase video: load on demand, never autoplay with reduced motion ===== */
+(function(){
+  const v = document.getElementById('showcase'); if (!v) return;
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)');
+  let loaded = false;
+  const load = () => {
+    if (loaded) return; loaded = true;
+    v.querySelectorAll('source[data-src]').forEach(s => { s.src = s.dataset.src; s.removeAttribute('data-src'); });
+    v.load();
+  };
+  const play = () => { const p = v.play(); if (p && p.catch) p.catch(() => {}); };   // autoplay can be refused: ignore
+  const auto = !reduce.matches;                 // reduced motion: poster + controls, the visitor presses Play
+  if (!auto) v.controls = true;
+  if (!('IntersectionObserver' in window)) { load(); if (auto) play(); return; }
+  new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting) { load(); if (auto) play(); } else if (loaded && auto) v.pause();
+  }), { rootMargin: '200px 0px' }).observe(v);
+})();
 
 /* ===== header + mobile menu ===== */
 const hdr = document.getElementById('siteHeader');
