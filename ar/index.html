@@ -133,6 +133,46 @@ html[dir] .reveal.is-visible{opacity:1;transform:none}
 }
 @media (max-width:359.98px){
   #security .grid-cols-2{grid-template-columns:1fr}
+}
+
+/* ===== Content pages (privacy, terms, 404) ===== */
+.ss-page{position:relative;padding:150px 0 96px;background:radial-gradient(1100px 420px at 50% -8%,color-mix(in oklab,var(--primary) 9%,transparent),transparent 70%)}
+.ss-page-in{max-width:48rem;margin:0 auto;padding:0 24px}
+.ss-draft{display:flex;gap:10px;align-items:flex-start;margin-bottom:28px;padding:14px 16px;border-radius:12px;border:1px dashed color-mix(in oklab,#f5b942 70%,transparent);background:color-mix(in oklab,#f5b942 10%,transparent);color:#f5d48a;font-size:14px;line-height:1.6}
+.ss-draft b{color:#ffe2a3}
+.ss-prose h1{font-size:clamp(30px,4.4vw,44px);font-weight:700;line-height:1.15;letter-spacing:-.02em}
+.ss-prose .ss-meta{margin-top:10px;color:var(--muted-foreground);font-size:14px}
+.ss-prose h2{margin-top:40px;font-size:20px;font-weight:600;letter-spacing:-.01em}
+.ss-prose p,.ss-prose li{margin-top:12px;color:var(--muted-foreground);font-size:15.5px;line-height:1.8}
+.ss-prose ul{margin-top:8px;padding-inline-start:20px;list-style:disc}
+.ss-prose li{margin-top:6px}
+.ss-prose a{color:var(--primary);text-decoration:underline;text-underline-offset:3px}
+.ss-prose strong{color:var(--foreground);font-weight:600}
+html[dir=rtl] .ss-prose h1,html[dir=rtl] .ss-prose h2{letter-spacing:0}
+.ss-404{text-align:center}
+.ss-404 .ss-code{font-size:clamp(84px,18vw,150px);font-weight:800;line-height:1;letter-spacing:-.04em;color:var(--primary)}
+.ss-404 h1{margin-top:12px;font-size:clamp(24px,3.6vw,34px);font-weight:700}
+.ss-404 p{margin:12px auto 0;max-width:32rem;color:var(--muted-foreground);line-height:1.75}
+.ss-404 .ss-404-ar{margin-top:34px;padding-top:30px;border-top:1px solid var(--border);font-family:"IBM Plex Sans Arabic",Inter,sans-serif}
+.ss-404 .ss-404-ar h1{letter-spacing:0}
+.ss-404 .ss-actions{margin-top:22px;display:flex;justify-content:center;flex-wrap:wrap;gap:12px}
+/* "Planned" tag next to modules that can't be ordered yet */
+.ss-planned{margin-inline-start:auto;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--muted-foreground);border:1px solid var(--border);border-radius:999px;padding:1px 8px;white-space:nowrap}
+html[dir=rtl] .ss-planned{letter-spacing:0;text-transform:none}
+
+/* ===== WhatsApp button: never cover content on small screens (LTR + RTL) ===== */
+/* In RTL the flex start is the right side: the old `align-items:flex-start` override pushed the button
+   ~270px into the page, over the module cards. flex-end keeps it at the inline end (left) edge. */
+html[dir=rtl] .ss-wa{align-items:flex-end}
+html[dir=rtl] .ss-wa-panel{transform-origin:bottom left}
+.ss-wa-panel{max-width:calc(100vw - 28px)}
+@media (max-width:639.98px){
+  .ss-wa{bottom:14px;inset-inline-end:14px}
+  .ss-wa-btn{width:48px;height:48px}
+  .ss-wa-btn svg{width:24px;height:24px}
+  /* the last section and the footer end above the button */
+  .sf-wrap{padding-bottom:84px}
+  #demo{padding-bottom:6rem}
 }</style>
 </head>
 <body>
@@ -595,9 +635,9 @@ html[dir] .reveal.is-visible{opacity:1;transform:none}
 <label class="flex cursor-pointer items-center gap-2 rounded-lg border border-border bg-background/60 px-3 py-2 text-xs font-medium text-muted-foreground transition hover:border-primary/40 has-[:checked]:border-primary has-[:checked]:text-foreground has-[:checked]:bg-primary/10">
 <input type="checkbox" name="mods" value="Reporting &amp; Analytics" class="accent-[var(--primary)]"><span>التقارير والتحليلات</span></label>
 <label class="flex cursor-pointer items-center gap-2 rounded-lg border border-border bg-background/60 px-3 py-2 text-xs font-medium text-muted-foreground transition hover:border-primary/40 has-[:checked]:border-primary has-[:checked]:text-foreground has-[:checked]:bg-primary/10">
-<input type="checkbox" name="mods" value="HR &amp; Payroll" class="accent-[var(--primary)]"><span>الموارد البشرية والرواتب</span></label>
+<input type="checkbox" name="mods" value="HR &amp; Payroll (Planned)" class="accent-[var(--primary)]"><span>الموارد البشرية والرواتب</span><span class="ss-planned">مخطط لها</span></label>
 <label class="flex cursor-pointer items-center gap-2 rounded-lg border border-border bg-background/60 px-3 py-2 text-xs font-medium text-muted-foreground transition hover:border-primary/40 has-[:checked]:border-primary has-[:checked]:text-foreground has-[:checked]:bg-primary/10">
-<input type="checkbox" name="mods" value="CRM" class="accent-[var(--primary)]"><span>إدارة علاقات العملاء</span></label>
+<input type="checkbox" name="mods" value="CRM (Planned)" class="accent-[var(--primary)]"><span>إدارة علاقات العملاء</span><span class="ss-planned">مخطط لها</span></label>
 </div>
 </div>
 <div class="md:col-span-2">
@@ -660,9 +700,9 @@ html[dir] .reveal.is-visible{opacity:1;transform:none}
 <div class="sf-bottom">
 <p>© 2026 Space Soft ERP. <!-- -->جميع الحقوق محفوظة.</p>
 <nav aria-label="روابط قانونية">
-<a href="https://spacesofterp.com/terms">شروط الاستخدام</a>
+<a href="/ar/terms/">شروط الاستخدام</a>
 <span aria-hidden="true">·</span>
-<a href="https://spacesofterp.com/privacy">سياسة الخصوصية</a>
+<a href="/ar/privacy/">سياسة الخصوصية</a>
 </nav>
 </div>
 </div>
@@ -677,6 +717,6 @@ html[dir] .reveal.is-visible{opacity:1;transform:none}
 </div>
 </div>
 <script src="/config.js?v=387205a692" defer></script>
-<script src="/assets/js/site.js?v=75a96367eb" defer></script>
+<script src="/assets/js/site.js?v=81a6963533" defer></script>
 </body>
 </html>

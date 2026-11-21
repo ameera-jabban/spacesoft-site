@@ -36,6 +36,20 @@ PAGES = [
          desc={'en': 'Bilingual web ERP for accounting, sales, purchasing, inventory and manufacturing, with multi-company, multi-branch and multi-currency control.',
                'ar': 'نظام ERP ويب ثنائي اللغة للمحاسبة والمبيعات والمشتريات والمخزون والتصنيع، مع تعدد الشركات والفروع والعملات ورقابة مالية كاملة.'},
          jsonld=('organization', 'software', 'faq')),
+    # Legal pages are written per language (src/<name>.<lang>.html). DRAFT: noindex + out of the sitemap
+    # until reviewed — then set noindex=False, sitemap=True.
+    dict(src={'en': 'privacy.en.html', 'ar': 'privacy.ar.html'}, path='privacy/', noindex=True, sitemap=False,
+         title={'en': 'Privacy Policy — Space Soft ERP', 'ar': 'سياسة الخصوصية — Space Soft ERP'},
+         desc={'en': 'How Space Soft ERP handles the information you send through spacesofterp.com, including demo requests.',
+               'ar': 'كيف تتعامل Space Soft ERP مع المعلومات التي ترسلها عبر spacesofterp.com، بما فيها طلبات العرض التجريبي.'}),
+    dict(src={'en': 'terms.en.html', 'ar': 'terms.ar.html'}, path='terms/', noindex=True, sitemap=False,
+         title={'en': 'Terms of Use — Space Soft ERP', 'ar': 'شروط الاستخدام — Space Soft ERP'},
+         desc={'en': 'Terms that apply to using the spacesofterp.com website.',
+               'ar': 'الشروط التي تنطبق على استخدام موقع spacesofterp.com.'}),
+    # One bilingual 404 page, served by nginx for every unknown URL (absolute asset paths, works at any depth).
+    dict(src='404.html', path='', home_page=False, langs=('en',), out={'en': '404.html'}, noindex=True, sitemap=False,
+         title={'en': 'Page not found — Space Soft ERP | الصفحة غير موجودة'},
+         desc={'en': 'The page you are looking for does not exist. الصفحة المطلوبة غير موجودة.'}),
 ]
 
 # ------------------------------------------------------------------ helpers
@@ -65,7 +79,7 @@ def translate(markup, ar):
         if key in text:
             lead = raw[:len(raw) - len(raw.lstrip())]; trail = raw[len(raw.rstrip()):]
             return '>' + lead + html.escape(text[key], quote=False) + trail + '<'
-        if re.search(r'[A-Za-z]{3}', key) and key not in keep and not re.search(r'@|\.com\b|\{\{', key): missing.add(key)
+        if re.search(r'[A-Za-z]{3}', key) and key not in keep and not re.search(r'@|\.com\b|\{\{|[؀-ۿ]', key) and key.strip(' :.,') not in keep: missing.add(key)
         return m.group(0)
     def tattr(m):
         v = html.unescape(m.group(2))
@@ -172,11 +186,12 @@ LANG_ACTIVE = {'desktop': 'bg-primary text-primary-foreground shadow-[0_0_12px_o
                'other': 'text-muted-foreground hover:text-foreground'}
 
 def render(page, lang, ar, css, partials):
-    body = read('src', page['src'])
-    assert body.startswith('<!--@layout-->'), page['src']
+    src = page['src'][lang] if isinstance(page['src'], dict) else page['src']
+    body = read('src', src)
+    assert body.startswith('<!--@layout-->'), src
     body = body[len('<!--@layout-->'):].strip('\n')
     doc = LAYOUT.replace('{{header}}', partials['header']).replace('{{content}}', body).replace('{{footer}}', partials['footer'])
-    is_home = page['path'] == ''
+    is_home = page['path'] == '' and page.get('home_page', True)
     doc = doc.replace('@@home@@', '' if is_home else lang_root(lang))
     doc = doc.replace('@@root@@', lang_root(lang)).replace('@@lang@@', lang)
     for l in LANGS:
@@ -194,7 +209,7 @@ def render(page, lang, ar, css, partials):
     doc = doc.replace('{{html_attrs}}', f'lang="{lang}" dir="{"rtl" if lang == "ar" else "ltr"}"')
     doc = doc.replace('{{head}}', head_for(page, lang, doc))
     leftover = re.findall(r'@@[a-z:.\-/]*@@|\{\{\w+\}\}', doc)
-    assert not leftover, f'{page["src"]} ({lang}): unresolved tokens {set(leftover)}'
+    assert not leftover, f'{src} ({lang}): unresolved tokens {set(leftover)}'
     return doc, missing
 
 LAYOUT = '''<!DOCTYPE html>
@@ -304,7 +319,7 @@ def build():
     partials = {n[:-5]: read('src', 'partials', n).strip('\n') for n in os.listdir(os.path.join(SRC, 'partials')) if n.endswith('.html')}
     outputs, all_missing = {}, set()
     for page in PAGES:
-        for lang in LANGS:
+        for lang in page.get('langs', LANGS):
             doc, missing = render(page, lang, ar, css, partials)
             all_missing |= missing
             write(out_path(page, lang), doc, outputs)

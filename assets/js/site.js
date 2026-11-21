@@ -57,7 +57,7 @@ faqs.forEach(d => d.addEventListener('toggle', () => { if (d.open) faqs.forEach(
 (function(){
   const CFG = window.SS_CONFIG || {};
   const ENDPOINT = 'https://api.web3forms.com/submit';
-  const form = document.getElementById('demoForm');
+  const form = document.getElementById('demoForm'); if (!form) return;
   const btn = document.getElementById('demoSubmit'), btnLabel = document.getElementById('demoSubmitLabel');
   const okBox = document.getElementById('formOk'), errBox = document.getElementById('formErr'), failBox = document.getElementById('formFail');
   const isAr = () => document.documentElement.lang === 'ar';

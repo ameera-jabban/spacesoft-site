@@ -2,7 +2,16 @@
  "_note": "text: exact English text -> Arabic. attr: alt/aria-label/title/placeholder values. keep: English strings that stay as-is on Arabic pages.",
  "keep": [
   "English",
-  "Space Soft ERP"
+  "Space Soft ERP",
+  "Web3Forms",
+  "Cloudflare",
+  "Google Fonts",
+  "ss_lang",
+  "ss_utm",
+  "localStorage",
+  "sessionStorage",
+  "HTTPS",
+  "404"
  ],
  "text": {
   "SPACE to Grow. Trust to Lead.": "مساحة لتنمو. ثقة لتقود.",
