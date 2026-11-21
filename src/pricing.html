@@ -1,0 +1,233 @@
+<!--@layout-->
+<script type="application/json" id="pricing-data">@@pricing-json@@</script>
+
+<!-- ===== Hero + price controls ===== -->
+<section class="ss-page ss-pricing-hero" aria-labelledby="pricing-title">
+<div class="mx-auto max-w-7xl px-6">
+<p class="text-xs font-semibold uppercase tracking-[0.22em] text-primary">Pricing</p>
+<h1 id="pricing-title" class="ss-pr-h1">Clear pricing, room to grow</h1>
+<p class="ss-pr-lead">Choose your plan and add the modules that fit your business. All prices are in US dollars and exclude applicable taxes. Choose the country where your company operates to see the right prices.</p>
+
+<div class="ss-controls" data-price-controls>
+<div class="ss-control">
+<label for="pr-country" class="ss-control-label">Country</label>
+<select id="pr-country" data-bind="country" class="ss-select">
+<option value="jo" selected>Jordan</option>
+<option value="ae">United Arab Emirates</option>
+<option value="sy">Syria</option>
+</select>
+</div>
+<fieldset class="ss-control">
+<legend class="ss-control-label">Billing</legend>
+<div class="ss-seg">
+<label><input type="radio" name="pr-cycle" value="monthly" data-bind="cycle"><span>Monthly</span></label>
+<label><input type="radio" name="pr-cycle" value="annual" data-bind="cycle" checked><span>Annual</span></label>
+</div>
+</fieldset>
+</div>
+<p class="ss-cycle-note" aria-live="polite"><span data-cycle-show="annual">Annual billing: the full year is paid upfront.</span><span data-cycle-show="monthly" hidden>Monthly billing: an initial 3-month commitment, then it renews month to month.</span></p>
+<!--@if:promo-->
+<p class="ss-promo" id="launch-promo" role="note"><b>Launch offer</b> <span>20% off the first year of annual subscriptions and recurring add-ons, for the first 20 paying customers or within 90 days of launch, whichever comes first. Eligibility is confirmed in your quote.</span></p>
+<!--@endif-->
+</div>
+</section>
+
+<!-- ===== Plans ===== -->
+<section class="ss-pr-section" aria-labelledby="plans-title">
+<div class="mx-auto max-w-7xl px-6">
+<h2 id="plans-title" class="sr-only">Plans</h2>
+<div class="ss-plans">
+<article class="surface-card ss-plan" data-plan="starter">
+<h3 class="ss-plan-name">Starter</h3>
+<p class="ss-plan-users">3 users included</p>
+<p class="ss-plan-price"><span class="ss-amount" data-price="plan.starter">@@price:plan.starter@@</span> <span class="ss-per"><span data-cycle-show="annual">/ year</span><span data-cycle-show="monthly" hidden>/ month</span></span></p>
+<p class="ss-plan-terms"><span data-cycle-show="annual">Paid upfront for the year</span><span data-cycle-show="monthly" hidden>3-month minimum, then monthly</span></p>
+<a href="#quote" class="btn-ghost ss-plan-cta" data-quote="plan" data-plan-id="starter">Request a Quote</a>
+</article>
+<article class="surface-card ss-plan" data-plan="business">
+<h3 class="ss-plan-name">Business</h3>
+<p class="ss-plan-users">8 users included</p>
+<p class="ss-plan-price"><span class="ss-amount" data-price="plan.business">@@price:plan.business@@</span> <span class="ss-per"><span data-cycle-show="annual">/ year</span><span data-cycle-show="monthly" hidden>/ month</span></span></p>
+<p class="ss-plan-terms"><span data-cycle-show="annual">Paid upfront for the year</span><span data-cycle-show="monthly" hidden>3-month minimum, then monthly</span></p>
+<a href="#quote" class="btn-primary ss-plan-cta" data-quote="plan" data-plan-id="business">Request a Quote</a>
+</article>
+<article class="surface-card ss-plan" data-plan="pro">
+<h3 class="ss-plan-name">Pro</h3>
+<p class="ss-plan-users">15 users included</p>
+<p class="ss-plan-price"><span class="ss-amount" data-price="plan.pro">@@price:plan.pro@@</span> <span class="ss-per"><span data-cycle-show="annual">/ year</span><span data-cycle-show="monthly" hidden>/ month</span></span></p>
+<p class="ss-plan-terms"><span data-cycle-show="annual">Paid upfront for the year</span><span data-cycle-show="monthly" hidden>3-month minimum, then monthly</span></p>
+<a href="#quote" class="btn-ghost ss-plan-cta" data-quote="plan" data-plan-id="pro">Request a Quote</a>
+</article>
+</div>
+
+<div class="ss-plan-details">
+<div>
+<h3 class="ss-h3">Every plan includes</h3>
+<ul class="ss-checks">
+<li>One company</li>
+<li>Accounting, warehouses, sales, purchasing and invoicing</li>
+<li>Currency revaluation</li>
+<li>Core reports and permissions</li>
+<li>Support and updates within the service scope</li>
+<!--@if:hosting-->
+<li>Standard cloud hosting</li>
+<!--@endif-->
+</ul>
+</div>
+<div>
+<h3 class="ss-h3">More users</h3>
+<p class="ss-small">Add users for <b class="ss-amount" data-price="extra.upTo15">@@price:extra.upTo15@@</b> <span data-cycle-show="annual">per year</span><span data-cycle-show="monthly" hidden>per month</span> each, up to 15 users in total. Above 15 users on Pro, each extra user is <b class="ss-amount" data-price="extra.over15">@@price:extra.over15@@</b> <span data-cycle-show="annual">per year</span><span data-cycle-show="monthly" hidden>per month</span>. The estimate below picks the lowest-cost combination for you.</p>
+<p class="ss-trial"><b>Try it free for @@trial-days@@ days, no payment card needed.</b> <a href="@@trial-href@@" data-quote="trial">Request an offer that fits your business</a></p>
+</div>
+</div>
+</div>
+</section>
+
+<!-- ===== Add-ons ===== -->
+<section class="ss-pr-section" aria-labelledby="addons-title">
+<div class="mx-auto max-w-7xl px-6">
+<p class="text-xs font-semibold uppercase tracking-[0.22em] text-primary">Add-ons</p>
+<h2 id="addons-title" class="ss-pr-h2">Add what your business needs</h2>
+<p class="ss-pr-sub">Add-ons require a base plan. The monthly price of every recurring item is its annual price divided by 10.</p>
+<div class="ss-table-wrap">
+<table class="ss-table">
+<thead><tr><th scope="col">Add-on</th><th scope="col">Pricing unit</th><th scope="col" class="ss-num">Price</th></tr></thead>
+<tbody>
+<tr><th scope="row">POS</th><td>Per cashier point</td><td class="ss-num"><span class="ss-amount" data-price="addon.pos">@@price:addon.pos@@</span> <span class="ss-per"><span data-cycle-show="annual">/ year</span><span data-cycle-show="monthly" hidden>/ month</span></span></td></tr>
+<tr><th scope="row">Sales reps</th><td>Per independent sales rep</td><td class="ss-num"><span class="ss-amount" data-price="addon.reps">@@price:addon.reps@@</span> <span class="ss-per"><span data-cycle-show="annual">/ year</span><span data-cycle-show="monthly" hidden>/ month</span></span></td></tr>
+<tr><th scope="row">Cash van</th><td>Per van, including one sales rep<span class="ss-cell-note">One-time activation: <b class="ss-amount" data-price="activation.van">@@price:activation.van@@</b>, confirmed in your quote</span></td><td class="ss-num"><span class="ss-amount" data-price="addon.van">@@price:addon.van@@</span> <span class="ss-per"><span data-cycle-show="annual">/ year</span><span data-cycle-show="monthly" hidden>/ month</span></span></td></tr>
+<tr><th scope="row">Restaurants</th><td>Per branch<span class="ss-cell-note">Includes one cashier point, the waiter app and the kitchen display. Extra cashier points are priced as POS.</span></td><td class="ss-num"><span class="ss-amount" data-price="addon.restaurant">@@price:addon.restaurant@@</span> <span class="ss-per"><span data-cycle-show="annual">/ year</span><span data-cycle-show="monthly" hidden>/ month</span></span></td></tr>
+<tr><th scope="row">Standard manufacturing</th><td>Per company</td><td class="ss-num"><span class="ss-amount" data-price="addon.manufacturing">@@price:addon.manufacturing@@</span> <span class="ss-per"><span data-cycle-show="annual">/ year</span><span data-cycle-show="monthly" hidden>/ month</span></span></td></tr>
+<tr class="ss-soon" data-module="hr"><th scope="row">HR &amp; Payroll</th><td>Available after release</td><td class="ss-num"><span class="ss-badge">Coming Soon</span></td></tr>
+<tr class="ss-soon" data-module="crm"><th scope="row">CRM</th><td>Available after release</td><td class="ss-num"><span class="ss-badge">Coming Soon</span></td></tr>
+</tbody>
+</table>
+</div>
+<p class="ss-small ss-mt">Restaurant pricing is an add-on to a base plan, not the price of the full system.</p>
+<div class="ss-callout">
+<p><b>Implementation and training are priced separately</b>, starting from <b class="ss-amount" data-price="impl.from">@@price:impl.from@@</b><span data-country-show="sy" hidden> for the lighter remote implementation in Syria</span>. The final price depends on your data, training, branches and the modules you need.</p>
+</div>
+</div>
+</section>
+
+<!-- ===== Estimate calculator ===== -->
+<section id="estimate" class="ss-pr-section scroll-mt-24" aria-labelledby="estimate-title">
+<div class="mx-auto max-w-7xl px-6">
+<p class="text-xs font-semibold uppercase tracking-[0.22em] text-primary">Estimate</p>
+<h2 id="estimate-title" class="ss-pr-h2">Estimate your subscription</h2>
+<p class="ss-pr-sub">Enter your team and operations. The estimate updates as you type.</p>
+<div class="ss-calc">
+<form class="surface-card ss-calc-in" id="calcForm" novalidate>
+<div class="ss-calc-row2">
+<div class="ss-control">
+<label for="calc-country" class="ss-control-label">Country</label>
+<select id="calc-country" data-bind="country" class="ss-select">
+<option value="jo" selected>Jordan</option>
+<option value="ae">United Arab Emirates</option>
+<option value="sy">Syria</option>
+</select>
+</div>
+<fieldset class="ss-control">
+<legend class="ss-control-label">Billing</legend>
+<div class="ss-seg">
+<label><input type="radio" name="calc-cycle" value="monthly" data-bind="cycle"><span>Monthly</span></label>
+<label><input type="radio" name="calc-cycle" value="annual" data-bind="cycle" checked><span>Annual</span></label>
+</div>
+</fieldset>
+</div>
+<div class="ss-field">
+<label for="calc-users">ERP users</label>
+<div class="ss-stepper"><button type="button" data-step="-1" aria-label="Decrease" tabindex="-1">−</button><input id="calc-users" name="users" type="number" inputmode="numeric" min="1" step="1" value="5" aria-describedby="calc-users-hint calc-users-err"><button type="button" data-step="1" aria-label="Increase" tabindex="-1">+</button></div>
+<p id="calc-users-hint" class="ss-hint">Named accounts with full access. Cashier and sales-rep logins are included with their add-on.</p>
+<p id="calc-users-err" class="ss-err" hidden></p>
+</div>
+<div class="ss-field">
+<label for="calc-cashiers">Extra cashier points (POS)</label>
+<div class="ss-stepper"><button type="button" data-step="-1" aria-label="Decrease" tabindex="-1">−</button><input id="calc-cashiers" name="cashiers" type="number" inputmode="numeric" min="0" step="1" value="0" aria-describedby="calc-cashiers-hint calc-cashiers-err"><button type="button" data-step="1" aria-label="Increase" tabindex="-1">+</button></div>
+<p id="calc-cashiers-hint" class="ss-hint">Each restaurant branch already includes one.</p>
+<p id="calc-cashiers-err" class="ss-err" hidden></p>
+</div>
+<div class="ss-field">
+<label for="calc-reps">Independent sales reps</label>
+<div class="ss-stepper"><button type="button" data-step="-1" aria-label="Decrease" tabindex="-1">−</button><input id="calc-reps" name="reps" type="number" inputmode="numeric" min="0" step="1" value="0" aria-describedby="calc-reps-hint calc-reps-err"><button type="button" data-step="1" aria-label="Increase" tabindex="-1">+</button></div>
+<p id="calc-reps-hint" class="ss-hint">Each cash van already includes one sales rep.</p>
+<p id="calc-reps-err" class="ss-err" hidden></p>
+</div>
+<div class="ss-field">
+<label for="calc-vans">Cash vans</label>
+<div class="ss-stepper"><button type="button" data-step="-1" aria-label="Decrease" tabindex="-1">−</button><input id="calc-vans" name="vans" type="number" inputmode="numeric" min="0" step="1" value="0" aria-describedby="calc-vans-err"><button type="button" data-step="1" aria-label="Increase" tabindex="-1">+</button></div>
+<p id="calc-vans-err" class="ss-err" hidden></p>
+</div>
+<div class="ss-field">
+<label for="calc-restaurants">Restaurant branches</label>
+<div class="ss-stepper"><button type="button" data-step="-1" aria-label="Decrease" tabindex="-1">−</button><input id="calc-restaurants" name="restaurants" type="number" inputmode="numeric" min="0" step="1" value="0" aria-describedby="calc-restaurants-err"><button type="button" data-step="1" aria-label="Increase" tabindex="-1">+</button></div>
+<p id="calc-restaurants-err" class="ss-err" hidden></p>
+</div>
+<label class="ss-toggle"><input id="calc-manufacturing" name="manufacturing" type="checkbox"><span>Add standard manufacturing for this company</span></label>
+<p class="ss-hint ss-mt">Each company with separate books needs its own subscription. Branches of the same company share its users.</p>
+</form>
+
+<div class="surface-card ss-result" aria-labelledby="result-title">
+<h3 id="result-title" class="ss-h3">Your estimate</h3>
+<noscript><p class="ss-small">Turn on JavaScript to use the estimate, or request a quote below.</p></noscript>
+<div id="calc-output" aria-live="polite" aria-atomic="false">
+<p class="ss-rec"><span class="ss-rec-label">Recommended plan</span> <b id="calc-plan">—</b></p>
+<dl id="calc-lines" class="ss-lines"></dl>
+<div class="ss-total">
+<p><span id="calc-total-label">Estimated first-year total</span> <b id="calc-total" class="ss-amount">—</b></p>
+<p id="calc-renewal" class="ss-small"></p>
+<p id="calc-commitment" class="ss-small" hidden></p>
+</div>
+<dl id="calc-onetime" class="ss-lines ss-onetime"></dl>
+</div>
+<p class="ss-hint ss-mt"><b>Included in this estimate:</b> the plan, extra users, recurring add-ons and approved one-time fees. <b>Settled in your quote:</b> implementation and training, applicable taxes, any discount, and special services.</p>
+<a href="#quote" class="btn-primary ss-result-cta" data-quote="estimate">Request a quote with this estimate</a>
+</div>
+</div>
+</div>
+</section>
+
+<!-- ===== Custom solutions ===== -->
+<section id="solutions" class="ss-pr-section scroll-mt-24" aria-labelledby="solutions-title">
+<div class="mx-auto max-w-7xl px-6">
+<p class="text-xs font-semibold uppercase tracking-[0.22em] text-primary">Custom solutions</p>
+<h2 id="solutions-title" class="ss-pr-h2">Custom ERP Solutions</h2>
+<p class="ss-pr-sub">Independent solutions priced to your project scope, outside the subscription estimate.</p>
+<div class="ss-solutions">
+<article class="surface-card ss-solution">
+<p class="ss-sol-price">Custom Quote</p>
+<h3 class="ss-h3">Custom ERP</h3>
+<p class="ss-small">Tailor Space Soft ERP to your workflows, approval processes, reporting needs, and existing systems.</p>
+<a href="#quote" class="btn-ghost ss-sol-cta" data-quote="solution" data-solution="Custom ERP">Request a Custom ERP Quote</a>
+</article>
+<article class="surface-card ss-solution">
+<p class="ss-sol-price">Custom Quote</p>
+<h3 class="ss-h3">White Label</h3>
+<p class="ss-small">Offer Space Soft ERP to your customers under your own brand, with licensing and services defined in your quote.</p>
+<a href="#quote" class="btn-ghost ss-sol-cta" data-quote="solution" data-solution="White Label">Request a White Label Quote</a>
+</article>
+<article class="surface-card ss-solution">
+<p class="ss-sol-price">Custom Quote</p>
+<h3 class="ss-h3">On-Premises</h3>
+<p class="ss-small">Deploy Space Soft ERP on your own infrastructure, with installation, support, and update requirements defined in your quote.</p>
+<a href="#quote" class="btn-ghost ss-sol-cta" data-quote="solution" data-solution="On-Premises">Request an On-Premises Quote</a>
+</article>
+</div>
+</div>
+</section>
+
+<!-- ===== Quote request (shared form, request type "quote") ===== -->
+<section id="quote" class="relative scroll-mt-24 overflow-hidden border-t border-border py-28">
+<div class="pointer-events-none absolute inset-0 grid-texture opacity-25" aria-hidden="true">
+</div>
+<div class="relative mx-auto grid max-w-7xl gap-14 px-6 lg:grid-cols-[1fr_1.25fr] lg:items-start">
+<div>
+<p class="text-sm font-semibold uppercase tracking-[0.18em] text-primary">Request a Quote</p>
+<h2 class="mt-4 text-4xl font-bold leading-tight tracking-tight md:text-5xl"><span class="text-gradient-brand">Get a quote for your business</span></h2>
+<p class="mt-6 max-w-md text-lg leading-relaxed text-muted-foreground">Tell us about your business. We confirm the plan, add-ons, implementation scope and any available offer in a written quote.</p>
+</div>
+<div class="relative rounded-3xl border border-border bg-surface/80 p-7 md:p-10">
+<!--@include request-form-->
+</div>
+</div>
+</section>

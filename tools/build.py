@@ -30,24 +30,31 @@ def write(rel, text, outputs):
 # ------------------------------------------------------------------ pages
 # path: URL path below the language root ('' = home). out: file name pattern.
 PAGES = [
-    dict(src='index.html', path='', sitemap=True, priority='1.0',
+    dict(id='index', src='index.html', path='', sitemap=True, priority='1.0',
          title={'en': 'Space Soft ERP — Finance and Operations in One Connected System',
                 'ar': 'Space Soft ERP — المالية والعمليات في نظام واحد مترابط'},
          desc={'en': 'Bilingual web ERP for accounting, sales, purchasing, inventory and manufacturing, with multi-company, multi-branch and multi-currency control.',
                'ar': 'نظام ERP ويب ثنائي اللغة للمحاسبة والمبيعات والمشتريات والمخزون والتصنيع، مع تعدد الشركات والفروع والعملات ورقابة مالية كاملة.'},
          jsonld=('organization', 'software', 'faq')),
+    dict(id='pricing', src='pricing.html', path='pricing/', sitemap=True, priority='0.9', reqtype='quote',
+         scripts=('js/pricing-engine.js', 'js/pricing.js'),
+         title={'en': 'Pricing — Space Soft ERP plans, add-ons and estimate',
+                'ar': 'الأسعار — باقات Space Soft ERP والإضافات وحاسبة التقدير'},
+         desc={'en': 'Space Soft ERP plans from $30/month: Starter, Business and Pro, add-ons, and a subscription estimate for Jordan, the UAE and Syria.',
+               'ar': 'باقات Space Soft ERP تبدأ من 30 دولاراً شهرياً: البداية والأعمال والمحترفة، مع الإضافات وحاسبة تقدير للأردن والإمارات وسوريا.'},
+         jsonld=('organization',)),
     # Legal pages are written per language (src/<name>.<lang>.html). DRAFT: noindex + out of the sitemap
     # until reviewed — then set noindex=False, sitemap=True.
-    dict(src={'en': 'privacy.en.html', 'ar': 'privacy.ar.html'}, path='privacy/', noindex=True, sitemap=False,
+    dict(id='privacy', src={'en': 'privacy.en.html', 'ar': 'privacy.ar.html'}, path='privacy/', noindex=True, sitemap=False,
          title={'en': 'Privacy Policy — Space Soft ERP', 'ar': 'سياسة الخصوصية — Space Soft ERP'},
          desc={'en': 'How Space Soft ERP handles the information you send through spacesofterp.com, including demo requests.',
                'ar': 'كيف تتعامل Space Soft ERP مع المعلومات التي ترسلها عبر spacesofterp.com، بما فيها طلبات العرض التجريبي.'}),
-    dict(src={'en': 'terms.en.html', 'ar': 'terms.ar.html'}, path='terms/', noindex=True, sitemap=False,
+    dict(id='terms', src={'en': 'terms.en.html', 'ar': 'terms.ar.html'}, path='terms/', noindex=True, sitemap=False,
          title={'en': 'Terms of Use — Space Soft ERP', 'ar': 'شروط الاستخدام — Space Soft ERP'},
          desc={'en': 'Terms that apply to using the spacesofterp.com website.',
                'ar': 'الشروط التي تنطبق على استخدام موقع spacesofterp.com.'}),
     # One bilingual 404 page, served by nginx for every unknown URL (absolute asset paths, works at any depth).
-    dict(src='404.html', path='', home_page=False, langs=('en',), out={'en': '404.html'}, noindex=True, sitemap=False,
+    dict(id='404', src='404.html', path='', home_page=False, langs=('en',), out={'en': '404.html'}, noindex=True, sitemap=False,
          title={'en': 'Page not found — Space Soft ERP | الصفحة غير موجودة'},
          desc={'en': 'The page you are looking for does not exist. الصفحة المطلوبة غير موجودة.'}),
 ]
@@ -185,18 +192,64 @@ def video_sources():
 LANG_ACTIVE = {'desktop': 'bg-primary text-primary-foreground shadow-[0_0_12px_oklch(0.72_0.12_191/40%)]',
                'other': 'text-muted-foreground hover:text-foreground'}
 
+PRICING = json.loads(read('src', 'data', 'pricing.json'))
+FLAGS = {
+    'hosting': lambda: bool(PRICING['hosting']['includedInPlans']),
+    'promo': lambda: bool(PRICING['launchPromo']['enabled']),
+    'trial_url': lambda: bool(PRICING['trial']['url']),
+}
+
+def public_json(v):
+    """Drop "_comment" keys before embedding config in a page."""
+    if isinstance(v, dict): return {k: public_json(x) for k, x in v.items() if not k.startswith('_')}
+    if isinstance(v, list): return [public_json(x) for x in v]
+    return v
+
+def fmt_usd(amount):
+    """$1,000 / $6.70 — same format as assets/js/pricing.js."""
+    cents = round(amount * 100)
+    return f'${cents // 100:,}' if cents % 100 == 0 else f'${cents / 100:,.2f}'
+
+def price_token(key):
+    """Static (no-JS) prices for the default country and cycle; pricing.js updates [data-price] on change."""
+    lst = PRICING['countries'][PRICING['defaultCountry']]['list']
+    div = 1 if PRICING['defaultCycle'] == 'annual' else PRICING['monthlyDivisor']
+    kind, _, ident = key.partition('.')
+    if kind == 'plan': v = next(x for x in PRICING['plans'] if x['id'] == ident)['annual'][lst] / div
+    elif kind == 'addon': v = next(x for x in PRICING['addons'] if x['id'] == ident)['annual'][lst] / div
+    elif kind == 'extra': v = PRICING['extraUsers'][ident + 'Annual'][lst] / div
+    elif kind == 'activation': v = next(x for x in PRICING['addons'] if x['id'] == ident)['activation']['price'][lst]
+    elif kind == 'impl': v = PRICING['implementationFrom'][lst]
+    else: raise KeyError(key)
+    return fmt_usd(v)
+
 def render(page, lang, ar, css, partials):
     src = page['src'][lang] if isinstance(page['src'], dict) else page['src']
     body = read('src', src)
     assert body.startswith('<!--@layout-->'), src
     body = body[len('<!--@layout-->'):].strip('\n')
     doc = LAYOUT.replace('{{header}}', partials['header']).replace('{{content}}', body).replace('{{footer}}', partials['footer'])
+    doc = re.sub(r'<!--@include ([\w-]+)-->', lambda m: partials[m.group(1)], doc)
+    # <!--@only:index,pricing--> … <!--@endonly-->  kept only on the listed pages
+    doc = re.sub(r'<!--@only:([\w,-]+)-->(.*?)<!--@endonly-->',
+                 lambda m: m.group(2) if page['id'] in m.group(1).split(',') else '', doc, flags=re.S)
+    # <!--@if:flag--> … <!--@endif-->  driven by src/data/pricing.json
+    doc = re.sub(r'<!--@if:(\w+)-->(.*?)<!--@endif-->', lambda m: m.group(2) if FLAGS[m.group(1)]() else '', doc, flags=re.S)
+    doc = doc.replace('@@reqtype@@', page.get('reqtype', 'demo'))
+    doc = doc.replace('@@pricing-json@@', json.dumps(public_json(PRICING), ensure_ascii=False, separators=(',', ':')).replace('</', '<\\/'))
+    doc = doc.replace('@@trial-href@@', PRICING['trial']['url'] or '#quote').replace('@@trial-days@@', str(PRICING['trial']['days']))
+    doc = re.sub(r'@@price:([\w.]+)@@', lambda m: price_token(m.group(1)), doc)
+    scripts = ''.join(f'<script src="{asset_url(js)}" defer></script>\n' for js in page.get('scripts', ()))
+    doc = doc.replace('<!--@page-scripts-->\n', scripts)
     is_home = page['path'] == '' and page.get('home_page', True)
     doc = doc.replace('@@home@@', '' if is_home else lang_root(lang))
     doc = doc.replace('@@root@@', lang_root(lang)).replace('@@lang@@', lang)
     for l in LANGS:
         doc = doc.replace(f'@@alt:{l}@@', page_url(l, page['path']))
         doc = doc.replace(f'@@langcls:{l}@@', LANG_ACTIVE['desktop'] if l == lang else LANG_ACTIVE['other'])
+    # links to the current page (nav): aria-current="page"
+    if not is_home:
+        doc = re.sub(rf'<a href="{re.escape(page_url(lang, page["path"]))}"(?![^>]*data-lang-link)', lambda m: m.group(0) + ' aria-current="page"', doc)
     # current language link: aria-current
     doc = re.sub(rf'(data-lang-link="{lang}")', r'\1 aria-current="true"', doc)
     doc = doc.replace('<!--@video-sources-->', video_sources())
@@ -235,6 +288,7 @@ LAYOUT = '''<!DOCTYPE html>
 </div>
 <script src="@@file:config.js@@" defer></script>
 <script src="@@file:site.js@@" defer></script>
+<!--@page-scripts-->
 </body>
 </html>
 '''
@@ -262,7 +316,7 @@ def csp_hashes(outputs):
     hs = set()
     for rel, doc in outputs.items():
         if not rel.endswith('.html'): continue
-        for m in re.finditer(r'<script(?![^>]*\b(?:src=|type="application/ld\+json"))[^>]*>(.*?)</script>', doc, flags=re.S):
+        for m in re.finditer(r'<script(?![^>]*\b(?:src=|type="application/(?:ld\+)?json"))[^>]*>(.*?)</script>', doc, flags=re.S):
             hs.add("'sha256-" + base64.b64encode(hashlib.sha256(m.group(1).encode()).digest()).decode() + "'")
     return sorted(hs)
 

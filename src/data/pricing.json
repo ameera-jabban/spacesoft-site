@@ -1,0 +1,56 @@
+{
+ "_note": "PUBLIC price list (USD, before tax). Single source for the pricing page and calculator. This file is published as-is: keep internal commercial rules and unreleased prices out of it (see tools/tests/pricing-engine.test.js). Annual prices are the reference; monthly = annual / 10 for every recurring item.",
+ "version": "2026-11-09",
+ "currency": "USD",
+ "monthlyDivisor": 10,
+ "monthlyCommitmentMonths": 3,
+ "countries": {
+  "jo": { "list": "jo_ae" },
+  "ae": { "list": "jo_ae" },
+  "sy": { "list": "sy" }
+ },
+ "defaultCountry": "jo",
+ "defaultCycle": "annual",
+ "plans": [
+  { "id": "starter",  "users": 3,  "annual": { "jo_ae": 300,  "sy": 200 } },
+  { "id": "business", "users": 8,  "annual": { "jo_ae": 600,  "sy": 400 } },
+  { "id": "pro",      "users": 15, "annual": { "jo_ae": 1000, "sy": 670 } }
+ ],
+ "extraUsers": {
+  "maxUsersOnTiers": 15,
+  "upTo15Annual":  { "jo_ae": 60, "sy": 40 },
+  "over15Annual":  { "jo_ae": 50, "sy": 35 }
+ },
+ "addons": [
+  { "id": "pos",           "input": "cashiers",       "annual": { "jo_ae": 100, "sy": 70 } },
+  { "id": "reps",          "input": "reps",           "annual": { "jo_ae": 30,  "sy": 20 } },
+  { "id": "van",           "input": "vans",           "annual": { "jo_ae": 100, "sy": 70 },
+    "activation": { "price": { "jo_ae": 50, "sy": 35 }, "unit": null,
+                    "_unit": "null = not yet approved: shown as 'confirmed in your quote' and kept out of the total. Set to \"perVan\" or \"perSubscription\" once approved." } },
+  { "id": "restaurant",    "input": "restaurants",    "annual": { "jo_ae": 400, "sy": 270 } },
+  { "id": "manufacturing", "input": "manufacturing",  "annual": { "jo_ae": 500, "sy": 340 } }
+ ],
+ "implementationFrom": { "jo_ae": 300, "sy": 100 },
+ "modules": [
+  { "id": "hr",  "status": "coming_soon" },
+  { "id": "crm", "status": "coming_soon" }
+ ],
+ "hosting": {
+  "includedInPlans": false,
+  "_note": "Set to true only after the hosting cost, storage, backup and support limits are approved; the plans then list 'Standard cloud hosting'."
+ },
+ "trial": {
+  "days": 14,
+  "url": null,
+  "_note": "URL of the approved self-service trial. While null, the trial invitation links to the quote form (request type 'trial')."
+ },
+ "launchPromo": {
+  "enabled": false,
+  "percent": 20,
+  "launchDate": null,
+  "windowDays": 90,
+  "maxCustomers": 20,
+  "eligibilityUrl": null,
+  "_note": "20% off annual subscriptions and recurring add-ons in year one, for the first 20 paying customers or within 90 days of launchDate, whichever comes first. The page applies it ONLY when enabled, inside the date window, AND eligibilityUrl (a trusted endpoint returning {\"eligible\": true}) confirms seats remain. Otherwise standard prices are shown and the discount is decided in the quote. Add the endpoint's origin to connect-src in tools/build.py (CSP_SOURCES)."
+ }
+}

@@ -1,0 +1,13 @@
+{
+  "name": "spacesoft-site",
+  "private": true,
+  "description": "Space Soft ERP marketing site (static). No runtime dependencies.",
+  "scripts": {
+    "build": "python tools/build.py",
+    "check": "python tools/build.py --check",
+    "lint": "python tools/lint.py",
+    "test": "node --test tools/tests/pricing-engine.test.js",
+    "test:e2e": "python tools/tests/e2e_test.py",
+    "verify": "npm run check && npm run lint && npm test && npm run test:e2e"
+  }
+}

@@ -118,9 +118,25 @@ faqs.forEach(d => d.addEventListener('toggle', () => { if (d.open) faqs.forEach(
     const fullName = val('#f-name'), company = val('#f-company');
     const modules = [...form.querySelectorAll('[name=mods]:checked')].map(c => c.value);
     const dash = v => v || '—';
+    // Request type: demo (home page), quote / custom / trial (pricing page)
+    const type = form.querySelector('#f-type')?.value || 'demo';
+    const solutions = [...form.querySelectorAll('[name=solutions]:checked')].map(c => c.value);
+    const SUBJECT = { demo: 'New Demo Request', quote: 'New Quote Request', custom: 'New Custom Solution Request', trial: 'New Trial Request' };
+    let estimate = {};
+    try { const raw = form.querySelector('#f-estimate')?.value; if (raw) estimate = JSON.parse(raw); } catch (e) {}
+    const extra = {};
+    if (type !== 'demo') {
+      extra.solutions = solutions.length ? solutions.join(', ') : '—';
+      extra.needs = dash(val('#f-needs'));
+    }
+    if (estimate.summary) Object.assign(extra, {
+      estimateCountry: estimate.country, estimateBilling: estimate.cycle, estimatePlan: estimate.plan,
+      estimateQuantities: estimate.quantities, estimateTotal: estimate.total, estimateRenewal: estimate.renewal,
+      estimateSummary: estimate.summary, priceListVersion: estimate.priceListVersion
+    });
     const payload = {
       access_key: CFG.web3formsKey,
-      subject: `New Demo Request — ${fullName} (${company || 'no company given'})`,
+      subject: `${SUBJECT[type] || SUBJECT.demo} — ${fullName} (${company || 'no company given'})`,
       from_name: 'Space Soft ERP Website',
       replyto: val('#f-email'),
       botcheck: false,
@@ -133,6 +149,8 @@ faqs.forEach(d => d.addEventListener('toggle', () => { if (d.open) faqs.forEach(
       industry: dash(val('#f-industry')),
       modules: modules.length ? modules.join(', ') : '—',
       message: dash(val('#f-message')),
+      requestType: type,
+      ...extra,
       language: isAr() ? 'AR' : 'EN',
       pageUrl: location.href,
       submittedAt: new Date().toISOString(),
@@ -155,9 +173,9 @@ faqs.forEach(d => d.addEventListener('toggle', () => { if (d.open) faqs.forEach(
       });
       const json = await res.json().catch(() => ({}));
       ok = res.ok && json.success === true;
-      if (!ok) console.warn('Demo request rejected:', res.status, json.message || '');
+      if (!ok) console.warn('Request rejected:', res.status, json.message || '');
     } catch (err) {
-      console.warn('Demo request failed:', err.message || err);
+      console.warn('Request failed:', err.message || err);
     } finally {
       clearTimeout(timer);
       sending = false; btn.disabled = false; btn.removeAttribute('aria-busy'); btnLabel.textContent = label;
@@ -165,8 +183,9 @@ faqs.forEach(d => d.addEventListener('toggle', () => { if (d.open) faqs.forEach(
 
     if (ok) {
       show(okBox, true); okBox.focus({ preventScroll: true });
-      form.querySelectorAll('input,textarea').forEach(i => { if (i.type === 'checkbox') i.checked = false; else i.value = ''; });
+      form.querySelectorAll('input,textarea').forEach(i => { if (i.type === 'checkbox') i.checked = false; else if (i.type !== 'hidden') i.value = ''; });
       form.querySelector('#f-size').value = '';
+      document.dispatchEvent(new CustomEvent('ss:form-sent'));
     } else {
       show(failBox, true);                                   // keep everything the visitor typed
     }

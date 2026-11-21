@@ -1,0 +1,96 @@
+<form id="demoForm" novalidate="" class="grid gap-5 md:grid-cols-2">
+<input type="hidden" name="requestType" id="f-type" value="@@reqtype@@">
+<input type="checkbox" name="botcheck" id="f-botcheck" class="ss-hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+<div class="">
+<label for="f-name" class="mb-2 flex items-center justify-between text-sm font-medium text-foreground"><span>Full Name<span class="ms-0.5 text-primary">*</span></span></label>
+<input id="f-name" name="fullName" aria-invalid="false" type="text" required="" autocomplete="name" aria-describedby="formErr" maxlength="200" class="w-full rounded-xl border bg-background/60 px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/60 outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/15 border-border hover:border-primary/40" value="">
+</div>
+<div class="">
+<label for="f-email" class="mb-2 flex items-center justify-between text-sm font-medium text-foreground"><span>Business Email<span class="ms-0.5 text-primary">*</span></span></label>
+<input id="f-email" name="email" aria-invalid="false" type="email" required="" autocomplete="email" inputmode="email" aria-describedby="formErr" maxlength="255" class="w-full rounded-xl border bg-background/60 px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/60 outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/15 border-border hover:border-primary/40" dir="ltr" value="">
+</div>
+<div class="">
+<label for="f-phone" class="mb-2 flex items-center justify-between text-sm font-medium text-foreground"><span>Phone Number</span><span class="text-xs font-normal text-muted-foreground">Optional</span></label>
+<input id="f-phone" name="phone" aria-invalid="false" type="tel" autocomplete="tel" maxlength="20" class="w-full rounded-xl border bg-background/60 px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/60 outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/15 border-border hover:border-primary/40" dir="ltr" value="">
+</div>
+<!--@only:pricing-->
+<div id="f-estimate-box" class="ss-estimate-box md:col-span-2" hidden>
+<div class="ss-estimate-head"><p class="text-sm font-semibold text-foreground">Your estimate is attached to this request</p><button type="button" id="f-estimate-remove" class="ss-linkbtn">Remove</button></div>
+<ul id="f-estimate-lines" class="ss-estimate-lines"></ul>
+</div>
+<input type="hidden" name="estimate" id="f-estimate" value="">
+<div class="md:col-span-2">
+<p id="f-solutions-label" class="mb-2 flex items-center justify-between text-sm font-medium text-foreground"><span>Custom solutions</span><span class="text-xs font-normal text-muted-foreground">Optional</span></p>
+<div role="group" aria-labelledby="f-solutions-label" class="grid grid-cols-1 gap-2 sm:grid-cols-3">
+<label class="flex cursor-pointer items-center gap-2 rounded-lg border border-border bg-background/60 px-3 py-2 text-xs font-medium text-muted-foreground transition hover:border-primary/40 has-[:checked]:border-primary has-[:checked]:text-foreground has-[:checked]:bg-primary/10">
+<input type="checkbox" name="solutions" value="Custom ERP" class="accent-[var(--primary)]"><span>Custom ERP</span></label>
+<label class="flex cursor-pointer items-center gap-2 rounded-lg border border-border bg-background/60 px-3 py-2 text-xs font-medium text-muted-foreground transition hover:border-primary/40 has-[:checked]:border-primary has-[:checked]:text-foreground has-[:checked]:bg-primary/10">
+<input type="checkbox" name="solutions" value="White Label" class="accent-[var(--primary)]"><span>White Label</span></label>
+<label class="flex cursor-pointer items-center gap-2 rounded-lg border border-border bg-background/60 px-3 py-2 text-xs font-medium text-muted-foreground transition hover:border-primary/40 has-[:checked]:border-primary has-[:checked]:text-foreground has-[:checked]:bg-primary/10">
+<input type="checkbox" name="solutions" value="On-Premises" class="accent-[var(--primary)]"><span>On-Premises</span></label>
+</div>
+</div>
+<div class="md:col-span-2">
+<label for="f-needs" class="mb-2 flex items-center justify-between text-sm font-medium text-foreground"><span>Describe what you need</span><span class="text-xs font-normal text-muted-foreground">Optional</span></label>
+<textarea id="f-needs" name="needs" aria-invalid="false" rows="3" maxlength="3000" class="w-full rounded-xl border bg-background/60 px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/60 outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/15 border-border hover:border-primary/40 resize-none"></textarea>
+</div>
+<!--@endonly-->
+<details class="md:col-span-2">
+<summary class="cursor-pointer py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">Additional details (optional)</summary>
+<div class="mt-4 grid gap-5 md:grid-cols-2">
+<div class="">
+<label for="f-company" class="mb-2 flex items-center justify-between text-sm font-medium text-foreground"><span>Company Name</span><span class="text-xs font-normal text-muted-foreground">Optional</span></label>
+<input id="f-company" name="company" aria-invalid="false" type="text" autocomplete="organization" maxlength="200" class="w-full rounded-xl border bg-background/60 px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/60 outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/15 border-border hover:border-primary/40" value="">
+</div>
+<div class="">
+<label for="f-country" class="mb-2 flex items-center justify-between text-sm font-medium text-foreground"><span>Country</span><span class="text-xs font-normal text-muted-foreground">Optional</span></label>
+<input id="f-country" name="country" aria-invalid="false" type="text" autocomplete="country-name" maxlength="100" class="w-full rounded-xl border bg-background/60 px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/60 outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/15 border-border hover:border-primary/40" value="">
+</div>
+<div class="">
+<label for="f-size" class="mb-2 flex items-center justify-between text-sm font-medium text-foreground"><span>Company Size</span><span class="text-xs font-normal text-muted-foreground">Optional</span></label><select id="f-size" name="size" class="w-full rounded-xl border bg-background/60 px-4 py-3 text-sm text-foreground outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/15 border-border hover:border-primary/40 h-12"><option value="">Select…</option><option>1–10 Employees</option><option>11–50</option><option>51–200</option><option>201–500</option><option>500+</option></select></div>
+<div class="">
+<label for="f-industry" class="mb-2 flex items-center justify-between text-sm font-medium text-foreground"><span>Industry</span><span class="text-xs font-normal text-muted-foreground">Optional</span></label>
+<input id="f-industry" name="industry" aria-invalid="false" type="text" maxlength="200" class="w-full rounded-xl border bg-background/60 px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/60 outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/15 border-border hover:border-primary/40" value="">
+</div>
+<div class="md:col-span-2">
+<p id="f-solution-label" class="mb-2 flex items-center justify-between text-sm font-medium text-foreground"><span>Modules of Interest</span><span class="text-xs font-normal text-muted-foreground">Optional</span></p>
+<div id="f-solution" role="group" aria-labelledby="f-solution-label" class="grid grid-cols-1 gap-2 sm:grid-cols-2">
+<label class="flex cursor-pointer items-center gap-2 rounded-lg border border-border bg-background/60 px-3 py-2 text-xs font-medium text-muted-foreground transition hover:border-primary/40 has-[:checked]:border-primary has-[:checked]:text-foreground has-[:checked]:bg-primary/10">
+<input type="checkbox" name="mods" value="System Administration &amp; Setup" class="accent-[var(--primary)]"><span>System Administration &amp; Setup</span></label>
+<label class="flex cursor-pointer items-center gap-2 rounded-lg border border-border bg-background/60 px-3 py-2 text-xs font-medium text-muted-foreground transition hover:border-primary/40 has-[:checked]:border-primary has-[:checked]:text-foreground has-[:checked]:bg-primary/10">
+<input type="checkbox" name="mods" value="Accounting &amp; Finance" class="accent-[var(--primary)]"><span>Accounting &amp; Finance</span></label>
+<label class="flex cursor-pointer items-center gap-2 rounded-lg border border-border bg-background/60 px-3 py-2 text-xs font-medium text-muted-foreground transition hover:border-primary/40 has-[:checked]:border-primary has-[:checked]:text-foreground has-[:checked]:bg-primary/10">
+<input type="checkbox" name="mods" value="Sales &amp; Receivables" class="accent-[var(--primary)]"><span>Sales &amp; Receivables</span></label>
+<label class="flex cursor-pointer items-center gap-2 rounded-lg border border-border bg-background/60 px-3 py-2 text-xs font-medium text-muted-foreground transition hover:border-primary/40 has-[:checked]:border-primary has-[:checked]:text-foreground has-[:checked]:bg-primary/10">
+<input type="checkbox" name="mods" value="Purchasing &amp; Payables" class="accent-[var(--primary)]"><span>Purchasing &amp; Payables</span></label>
+<label class="flex cursor-pointer items-center gap-2 rounded-lg border border-border bg-background/60 px-3 py-2 text-xs font-medium text-muted-foreground transition hover:border-primary/40 has-[:checked]:border-primary has-[:checked]:text-foreground has-[:checked]:bg-primary/10">
+<input type="checkbox" name="mods" value="Inventory &amp; Warehousing" class="accent-[var(--primary)]"><span>Inventory &amp; Warehousing</span></label>
+<label class="flex cursor-pointer items-center gap-2 rounded-lg border border-border bg-background/60 px-3 py-2 text-xs font-medium text-muted-foreground transition hover:border-primary/40 has-[:checked]:border-primary has-[:checked]:text-foreground has-[:checked]:bg-primary/10">
+<input type="checkbox" name="mods" value="Imported Purchases &amp; Landed Cost" class="accent-[var(--primary)]"><span>Imported Purchases &amp; Landed Cost</span></label>
+<label class="flex cursor-pointer items-center gap-2 rounded-lg border border-border bg-background/60 px-3 py-2 text-xs font-medium text-muted-foreground transition hover:border-primary/40 has-[:checked]:border-primary has-[:checked]:text-foreground has-[:checked]:bg-primary/10">
+<input type="checkbox" name="mods" value="Fixed Assets" class="accent-[var(--primary)]"><span>Fixed Assets</span></label>
+<label class="flex cursor-pointer items-center gap-2 rounded-lg border border-border bg-background/60 px-3 py-2 text-xs font-medium text-muted-foreground transition hover:border-primary/40 has-[:checked]:border-primary has-[:checked]:text-foreground has-[:checked]:bg-primary/10">
+<input type="checkbox" name="mods" value="Projects &amp; Cost Centers" class="accent-[var(--primary)]"><span>Projects &amp; Cost Centers</span></label>
+<label class="flex cursor-pointer items-center gap-2 rounded-lg border border-border bg-background/60 px-3 py-2 text-xs font-medium text-muted-foreground transition hover:border-primary/40 has-[:checked]:border-primary has-[:checked]:text-foreground has-[:checked]:bg-primary/10">
+<input type="checkbox" name="mods" value="Manufacturing" class="accent-[var(--primary)]"><span>Manufacturing</span></label>
+<label class="flex cursor-pointer items-center gap-2 rounded-lg border border-border bg-background/60 px-3 py-2 text-xs font-medium text-muted-foreground transition hover:border-primary/40 has-[:checked]:border-primary has-[:checked]:text-foreground has-[:checked]:bg-primary/10">
+<input type="checkbox" name="mods" value="POS" class="accent-[var(--primary)]"><span>POS</span></label>
+<label class="flex cursor-pointer items-center gap-2 rounded-lg border border-border bg-background/60 px-3 py-2 text-xs font-medium text-muted-foreground transition hover:border-primary/40 has-[:checked]:border-primary has-[:checked]:text-foreground has-[:checked]:bg-primary/10">
+<input type="checkbox" name="mods" value="Reporting &amp; Analytics" class="accent-[var(--primary)]"><span>Reporting &amp; Analytics</span></label>
+<label class="flex cursor-pointer items-center gap-2 rounded-lg border border-border bg-background/60 px-3 py-2 text-xs font-medium text-muted-foreground transition hover:border-primary/40 has-[:checked]:border-primary has-[:checked]:text-foreground has-[:checked]:bg-primary/10">
+<input type="checkbox" name="mods" value="HR &amp; Payroll (Planned)" class="accent-[var(--primary)]"><span>HR &amp; Payroll</span><span class="ss-planned">Planned</span></label>
+<label class="flex cursor-pointer items-center gap-2 rounded-lg border border-border bg-background/60 px-3 py-2 text-xs font-medium text-muted-foreground transition hover:border-primary/40 has-[:checked]:border-primary has-[:checked]:text-foreground has-[:checked]:bg-primary/10">
+<input type="checkbox" name="mods" value="CRM (Planned)" class="accent-[var(--primary)]"><span>CRM</span><span class="ss-planned">Planned</span></label>
+</div>
+</div>
+<div class="md:col-span-2">
+<label for="f-message" class="mb-2 flex items-center justify-between text-sm font-medium text-foreground"><span>Tell us about your requirements</span><span class="text-xs font-normal text-muted-foreground">Optional</span></label>
+<textarea id="f-message" name="message" aria-invalid="false" rows="4" maxlength="3000" class="w-full rounded-xl border bg-background/60 px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/60 outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/15 border-border hover:border-primary/40 resize-none"></textarea>
+</div>
+</div>
+</details>
+<button class="inline-flex items-center gap-2 whitespace-nowrap rounded-md font-medium cursor-pointer transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:cursor-not-allowed [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 bg-primary text-primary-foreground shadow hover:bg-primary/90 h-9 px-4 btn-primary w-full justify-center py-4 text-base disabled:opacity-70 md:col-span-2" type="submit" id="demoSubmit"><span class="ss-spin" aria-hidden="true"></span><span id="demoSubmitLabel"><!--@only:index-->Request a Demo<!--@endonly--><!--@only:pricing-->Request a Quote<!--@endonly--></span> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right h-5 w-5 rtl:rotate-180" aria-hidden="true"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></button>
+<div id="formOk" role="status" tabindex="-1" class="hidden md:col-span-2 rounded-xl border border-primary/40 bg-primary/10 p-4 text-center text-sm font-semibold text-primary">Thank you! Your request has been received. Our team will contact you shortly.</div>
+<p id="formErr" role="alert" class="hidden md:col-span-2 text-center text-sm text-red-400">Please enter your full name and a valid business email.</p>
+<p id="formFail" role="alert" class="hidden md:col-span-2 text-center text-sm text-red-400">We couldn't send your request. Please try again, or email us at <a href="mailto:info@spacesofterp.com" class="font-semibold underline" dir="ltr">info@spacesofterp.com</a>.</p>
+</form>
