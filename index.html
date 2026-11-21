@@ -87,6 +87,11 @@ html[dir="rtl"] .ss-wa{align-items:flex-start}
 .ss-wa-item svg{color:#25d366;margin-inline-start:auto}
 .ss-flag{font-size:22px;line-height:1}.ss-wa-txt{display:flex;flex-direction:column;line-height:1.3}.ss-wa-txt b{font-size:13px}.ss-wa-txt small{font-size:12px;color:var(--muted-foreground);text-align:start}
 @media(prefers-reduced-motion:reduce){.ss-wa-btn{animation:none}}
+/* demo form: honeypot + loading state */
+.ss-hp{display:none!important}
+.ss-spin{display:none;width:18px;height:18px;border-radius:50%;border:2px solid currentColor;border-inline-end-color:transparent;animation:ss-rot .7s linear infinite}
+#demoSubmit[aria-busy="true"] .ss-spin{display:inline-block}#demoSubmit[aria-busy="true"]>svg{display:none}#demoSubmit[aria-busy="true"]{cursor:progress;opacity:.8}
+@keyframes ss-rot{to{transform:rotate(1turn)}}
 </style>
 </head>
 <body>
@@ -494,34 +499,35 @@ html[dir="rtl"] .ss-wa{align-items:flex-start}
 <div class="pointer-events-none absolute inset-x-10 top-0 h-px bg-gradient-to-r from-transparent via-primary/60 to-transparent" aria-hidden="true">
 </div>
 <form id="demoForm" novalidate="" class="grid gap-5 md:grid-cols-2">
+<input type="checkbox" name="botcheck" id="f-botcheck" class="ss-hp" tabindex="-1" autocomplete="off" aria-hidden="true">
 <div class="">
 <label for="f-name" class="mb-2 flex items-center justify-between text-sm font-medium text-foreground"><span>Full Name<span class="ms-0.5 text-primary">*</span></span></label>
-<input id="f-name" aria-invalid="false" type="text" required="" maxlength="200" class="w-full rounded-xl border bg-background/60 px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/60 outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/15 border-border hover:border-primary/40" value="">
+<input id="f-name" name="fullName" aria-invalid="false" type="text" required="" autocomplete="name" aria-describedby="formErr" maxlength="200" class="w-full rounded-xl border bg-background/60 px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/60 outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/15 border-border hover:border-primary/40" value="">
 </div>
 <div class="">
 <label for="f-email" class="mb-2 flex items-center justify-between text-sm font-medium text-foreground"><span>Business Email<span class="ms-0.5 text-primary">*</span></span></label>
-<input id="f-email" aria-invalid="false" type="email" required="" maxlength="255" class="w-full rounded-xl border bg-background/60 px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/60 outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/15 border-border hover:border-primary/40" dir="ltr" value="">
+<input id="f-email" name="email" aria-invalid="false" type="email" required="" autocomplete="email" inputmode="email" aria-describedby="formErr" maxlength="255" class="w-full rounded-xl border bg-background/60 px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/60 outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/15 border-border hover:border-primary/40" dir="ltr" value="">
 </div>
 <div class="">
 <label for="f-phone" class="mb-2 flex items-center justify-between text-sm font-medium text-foreground"><span>Phone Number</span><span class="text-xs font-normal text-muted-foreground">Optional</span></label>
-<input id="f-phone" aria-invalid="false" type="tel" maxlength="20" class="w-full rounded-xl border bg-background/60 px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/60 outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/15 border-border hover:border-primary/40" dir="ltr" value="">
+<input id="f-phone" name="phone" aria-invalid="false" type="tel" autocomplete="tel" maxlength="20" class="w-full rounded-xl border bg-background/60 px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/60 outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/15 border-border hover:border-primary/40" dir="ltr" value="">
 </div>
 <details class="md:col-span-2">
 <summary class="cursor-pointer py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">Additional details (optional)</summary>
 <div class="mt-4 grid gap-5 md:grid-cols-2">
 <div class="">
 <label for="f-company" class="mb-2 flex items-center justify-between text-sm font-medium text-foreground"><span>Company Name</span><span class="text-xs font-normal text-muted-foreground">Optional</span></label>
-<input id="f-company" aria-invalid="false" type="text" maxlength="200" class="w-full rounded-xl border bg-background/60 px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/60 outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/15 border-border hover:border-primary/40" value="">
+<input id="f-company" name="company" aria-invalid="false" type="text" autocomplete="organization" maxlength="200" class="w-full rounded-xl border bg-background/60 px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/60 outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/15 border-border hover:border-primary/40" value="">
 </div>
 <div class="">
 <label for="f-country" class="mb-2 flex items-center justify-between text-sm font-medium text-foreground"><span>Country</span><span class="text-xs font-normal text-muted-foreground">Optional</span></label>
-<input id="f-country" aria-invalid="false" type="text" maxlength="100" class="w-full rounded-xl border bg-background/60 px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/60 outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/15 border-border hover:border-primary/40" value="">
+<input id="f-country" name="country" aria-invalid="false" type="text" autocomplete="country-name" maxlength="100" class="w-full rounded-xl border bg-background/60 px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/60 outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/15 border-border hover:border-primary/40" value="">
 </div>
 <div class="">
-<label for="f-size" class="mb-2 flex items-center justify-between text-sm font-medium text-foreground"><span>Company Size</span><span class="text-xs font-normal text-muted-foreground">Optional</span></label><select id="f-size" class="w-full rounded-xl border bg-background/60 px-4 py-3 text-sm text-foreground outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/15 border-border hover:border-primary/40 h-12"><option value="">Select…</option><option>1–10 Employees</option><option>11–50</option><option>51–200</option><option>201–500</option><option>500+</option></select></div>
+<label for="f-size" class="mb-2 flex items-center justify-between text-sm font-medium text-foreground"><span>Company Size</span><span class="text-xs font-normal text-muted-foreground">Optional</span></label><select id="f-size" name="size" class="w-full rounded-xl border bg-background/60 px-4 py-3 text-sm text-foreground outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/15 border-border hover:border-primary/40 h-12"><option value="">Select…</option><option>1–10 Employees</option><option>11–50</option><option>51–200</option><option>201–500</option><option>500+</option></select></div>
 <div class="">
 <label for="f-industry" class="mb-2 flex items-center justify-between text-sm font-medium text-foreground"><span>Industry</span><span class="text-xs font-normal text-muted-foreground">Optional</span></label>
-<input id="f-industry" aria-invalid="false" type="text" maxlength="200" class="w-full rounded-xl border bg-background/60 px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/60 outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/15 border-border hover:border-primary/40" value="">
+<input id="f-industry" name="industry" aria-invalid="false" type="text" maxlength="200" class="w-full rounded-xl border bg-background/60 px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/60 outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/15 border-border hover:border-primary/40" value="">
 </div>
 <div class="md:col-span-2">
 <label for="f-solution" class="mb-2 flex items-center justify-between text-sm font-medium text-foreground"><span>Modules of Interest</span><span class="text-xs font-normal text-muted-foreground">Optional</span></label>
@@ -556,13 +562,14 @@ html[dir="rtl"] .ss-wa{align-items:flex-start}
 </div>
 <div class="md:col-span-2">
 <label for="f-message" class="mb-2 flex items-center justify-between text-sm font-medium text-foreground"><span>Tell us about your requirements</span><span class="text-xs font-normal text-muted-foreground">Optional</span></label>
-<textarea id="f-message" aria-invalid="false" rows="4" maxlength="3000" class="w-full rounded-xl border bg-background/60 px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/60 outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/15 border-border hover:border-primary/40 resize-none"></textarea>
+<textarea id="f-message" name="message" aria-invalid="false" rows="4" maxlength="3000" class="w-full rounded-xl border bg-background/60 px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/60 outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/15 border-border hover:border-primary/40 resize-none"></textarea>
 </div>
 </div>
 </details>
-<button class="inline-flex items-center gap-2 whitespace-nowrap rounded-md font-medium cursor-pointer transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:cursor-not-allowed [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 bg-primary text-primary-foreground shadow hover:bg-primary/90 h-9 px-4 btn-primary w-full justify-center py-4 text-base disabled:opacity-70 md:col-span-2" type="submit">Request a Demo<!-- --> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right h-5 w-5 rtl:rotate-180" aria-hidden="true"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></button>
-<div id="formOk" class="hidden md:col-span-2 rounded-xl border border-primary/40 bg-primary/10 p-4 text-center text-sm font-semibold text-primary">Thank you! Your request has been received. Our team will contact you shortly.</div>
-<p id="formErr" class="hidden md:col-span-2 text-center text-sm text-red-400">Please enter your full name and a valid business email.</p>
+<button class="inline-flex items-center gap-2 whitespace-nowrap rounded-md font-medium cursor-pointer transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:cursor-not-allowed [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 bg-primary text-primary-foreground shadow hover:bg-primary/90 h-9 px-4 btn-primary w-full justify-center py-4 text-base disabled:opacity-70 md:col-span-2" type="submit" id="demoSubmit"><span class="ss-spin" aria-hidden="true"></span><span id="demoSubmitLabel">Request a Demo</span> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right h-5 w-5 rtl:rotate-180" aria-hidden="true"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></button>
+<div id="formOk" role="status" tabindex="-1" class="hidden md:col-span-2 rounded-xl border border-primary/40 bg-primary/10 p-4 text-center text-sm font-semibold text-primary">Thank you! Your request has been received. Our team will contact you shortly.</div>
+<p id="formErr" role="alert" class="hidden md:col-span-2 text-center text-sm text-red-400">Please enter your full name and a valid business email.</p>
+<p id="formFail" role="alert" class="hidden md:col-span-2 text-center text-sm text-red-400">We couldn't send your request. Please try again, or email us at <a href="mailto:info@spacesofterp.com" class="font-semibold underline" dir="ltr">info@spacesofterp.com</a>.</p>
 </form>
 </div>
 </div>
@@ -629,6 +636,7 @@ html[dir="rtl"] .ss-wa{align-items:flex-start}
 <button type="button" class="ss-wa-btn" id="waBtn" aria-label="WhatsApp" aria-expanded="false"><svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor" aria-hidden="true"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.64.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.88 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.63.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2.01-1.41.25-.7.25-1.29.17-1.41-.07-.13-.27-.2-.57-.35M12.05 21.5h-.01a9.4 9.4 0 0 1-4.8-1.32l-.35-.2-3.56.93.95-3.47-.22-.36a9.4 9.4 0 0 1-1.44-5.02c0-5.2 4.23-9.43 9.44-9.43 2.52 0 4.89.98 6.67 2.77a9.36 9.36 0 0 1 2.76 6.67c0 5.2-4.24 9.43-9.44 9.43m8.03-17.46A11.27 11.27 0 0 0 12.05.7C5.8.7.71 5.78.71 12.04c0 2 .52 3.95 1.52 5.67L.62 23.6l6.03-1.58a11.3 11.3 0 0 0 5.4 1.38h.01c6.25 0 11.34-5.08 11.34-11.34 0-3.03-1.18-5.88-3.32-8.02"/></svg></button>
 </div>
 </div>
+<script src="config.js"></script>
 <script>
 /* ===== Arabic translations (EN → AR). Edit freely. ===== */
 const AR = {
@@ -712,6 +720,7 @@ const AR = {
 "Industry":"القطاع","Modules of Interest":"الوحدات المطلوبة","Tell us about your requirements":"أخبرنا عن متطلباتك",
 "Thank you! Your request has been received. Our team will contact you shortly.":"شكراً لك! تم استلام طلبك وسيتواصل معك فريقنا قريباً.",
 "Please enter your full name and a valid business email.":"يرجى إدخال الاسم الكامل وبريد إلكتروني صحيح للعمل.",
+"We couldn't send your request. Please try again, or email us at":"تعذّر إرسال طلبك. يرجى المحاولة مرة أخرى، أو راسلنا على",
 "Unified ERP solutions for finance, operations, inventory, projects and business intelligence.":"حلول ERP موحّدة للمالية والعمليات والمخزون والمشاريع وذكاء الأعمال.",
 "© 2026 Space Soft ERP.":"© 2026 Space Soft ERP.","All rights reserved.":"جميع الحقوق محفوظة.","Terms of Use":"شروط الاستخدام","Privacy Policy":"سياسة الخصوصية"
 };
@@ -775,28 +784,98 @@ document.querySelectorAll('.reveal').forEach((el, i) => {
 const faqs = document.querySelectorAll('#faq details');
 faqs.forEach(d => d.addEventListener('toggle', () => { if (d.open) faqs.forEach(o => o !== d && (o.open = false)); }));
 
-/* ===== Demo form ===== */
-document.getElementById('demoForm').addEventListener('submit', e => {
-  e.preventDefault();
-  const f = e.target, name = f.querySelector('#f-name'), email = f.querySelector('#f-email');
-  const okName = name.value.trim().length > 1, okEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim());
-  name.setAttribute('aria-invalid', !okName); email.setAttribute('aria-invalid', !okEmail);
-  [name, email].forEach(i => i.classList.toggle('!border-red-400', i.getAttribute('aria-invalid') === 'true'));
-  document.getElementById('formErr').classList.toggle('hidden', okName && okEmail);
-  if (!(okName && okEmail)) return;
-  const data = {
-    fullName: name.value.trim(), email: email.value.trim(),
-    phone: f.querySelector('#f-phone').value.trim(), company: f.querySelector('#f-company').value.trim(),
-    country: f.querySelector('#f-country').value.trim(), size: f.querySelector('#f-size').value,
-    industry: f.querySelector('#f-industry').value.trim(),
-    modules: [...f.querySelectorAll('[name=mods]:checked')].map(c => c.value),
-    message: f.querySelector('#f-message').value.trim(), lang: document.documentElement.lang
-  };
-  console.log('Demo request', data); // TODO: POST to your backend endpoint
-  document.getElementById('formOk').classList.remove('hidden');
-  f.querySelectorAll('input,textarea').forEach(i => { if (i.type === 'checkbox') i.checked = false; else i.value = ''; });
-  f.querySelector('#f-size').value = '';
-});
+/* ===== Demo form → Web3Forms (emails each request to info@spacesofterp.com) ===== */
+(function(){
+  const CFG = window.SS_CONFIG || {};
+  const ENDPOINT = 'https://api.web3forms.com/submit';
+  const form = document.getElementById('demoForm');
+  const btn = document.getElementById('demoSubmit'), btnLabel = document.getElementById('demoSubmitLabel');
+  const okBox = document.getElementById('formOk'), errBox = document.getElementById('formErr'), failBox = document.getElementById('formFail');
+  const isAr = () => document.documentElement.lang === 'ar';
+
+  // Keep UTM parameters for the whole visit (they would be lost after switching language).
+  const UTM_KEY = 'ss_utm';
+  let utm = {};
+  try { utm = JSON.parse(sessionStorage.getItem(UTM_KEY) || '{}'); } catch (e) {}
+  new URLSearchParams(location.search).forEach((v, k) => { if (/^utm_/i.test(k) && v) utm[k.toLowerCase()] = v.slice(0, 200); });
+  try { sessionStorage.setItem(UTM_KEY, JSON.stringify(utm)); } catch (e) {}
+
+  let sending = false;
+  const val = sel => form.querySelector(sel).value.trim();
+  const show = (el, on) => el.classList.toggle('hidden', !on);
+
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    if (sending) return;                                    // no double submits
+    show(okBox, false); show(failBox, false);
+
+    const name = form.querySelector('#f-name'), email = form.querySelector('#f-email');
+    const okName = name.value.trim().length > 1, okEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim());
+    name.setAttribute('aria-invalid', !okName); email.setAttribute('aria-invalid', !okEmail);
+    [name, email].forEach(i => i.classList.toggle('!border-red-400', i.getAttribute('aria-invalid') === 'true'));
+    show(errBox, !(okName && okEmail));
+    if (!(okName && okEmail)) { (okName ? email : name).focus(); return; }
+
+    // Honeypot: real visitors never see this checkbox. Pretend success, send nothing.
+    if (form.querySelector('#f-botcheck').checked) { show(okBox, true); return; }
+
+    const fullName = val('#f-name'), company = val('#f-company');
+    const modules = [...form.querySelectorAll('[name=mods]:checked')].map(c => c.value);
+    const dash = v => v || '—';
+    const payload = {
+      access_key: CFG.web3formsKey,
+      subject: `New Demo Request — ${fullName} (${company || 'no company given'})`,
+      from_name: 'Space Soft ERP Website',
+      replyto: val('#f-email'),
+      botcheck: false,
+      fullName,
+      email: val('#f-email'),
+      phone: dash(val('#f-phone')),
+      company: dash(company),
+      country: dash(val('#f-country')),
+      size: dash(form.querySelector('#f-size').value),
+      industry: dash(val('#f-industry')),
+      modules: modules.length ? modules.join(', ') : '—',
+      message: dash(val('#f-message')),
+      language: isAr() ? 'AR' : 'EN',
+      pageUrl: location.href,
+      submittedAt: new Date().toISOString(),
+      ...utm
+    };
+
+    sending = true;
+    const label = btnLabel.textContent;
+    btn.disabled = true; btn.setAttribute('aria-busy', 'true');
+    btnLabel.textContent = isAr() ? 'جارٍ الإرسال…' : 'Sending…';
+    const ctrl = new AbortController(), timer = setTimeout(() => ctrl.abort(), 20000);
+    let ok = false;
+    try {
+      if (!CFG.web3formsKey || /^<.*>$/.test(CFG.web3formsKey)) throw new Error('Web3Forms access key is not configured (config.js)');
+      const res = await fetch(ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify(payload),
+        signal: ctrl.signal
+      });
+      const json = await res.json().catch(() => ({}));
+      ok = res.ok && json.success === true;
+      if (!ok) console.warn('Demo request rejected:', res.status, json.message || '');
+    } catch (err) {
+      console.warn('Demo request failed:', err.message || err);
+    } finally {
+      clearTimeout(timer);
+      sending = false; btn.disabled = false; btn.removeAttribute('aria-busy'); btnLabel.textContent = label;
+    }
+
+    if (ok) {
+      show(okBox, true); okBox.focus({ preventScroll: true });
+      form.querySelectorAll('input,textarea').forEach(i => { if (i.type === 'checkbox') i.checked = false; else i.value = ''; });
+      form.querySelector('#f-size').value = '';
+    } else {
+      show(failBox, true);                                   // keep everything the visitor typed
+    }
+  });
+})();
 </script>
 </body>
 </html>
