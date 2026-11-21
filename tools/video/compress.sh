@@ -2,7 +2,7 @@
 # Compress the showcase video into a desktop and a mobile variant.
 # Requires ffmpeg (https://ffmpeg.org). Run from the repo root:
 #   bash tools/video/compress.sh
-# Output (picked up automatically by tools/build.py on the next build):
+# Output (used automatically after: python tools/build.py):
 #   assets/spacesoft-showcase-1280.mp4   desktop, max 1280 px wide (target < 800 KB)
 #   assets/spacesoft-showcase-720.mp4    mobile,  max 720 px wide  (target < 400 KB)
 set -euo pipefail
