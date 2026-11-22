@@ -245,9 +245,6 @@
   "All prices are in US dollars and exclude applicable taxes.": "جميع الأسعار بالدولار الأمريكي، ولا تشمل الضرائب المطبقة.",
   "Paid annually in advance": "يُدفع سنويًا مقدمًا",
   "Try it free for 14 days, no payment card needed.": "جرّب البرنامج 14 يوماً دون بطاقة دفع.",
-  "Extra user:": "مستخدم إضافي:",
-  "Each user above 15:": "كل مستخدم فوق 15:",
-  "Up to 15 users in total": "حتى 15 مستخدماً كحد أقصى",
   "Enterprise Solutions": "حلول المؤسسات",
   "Priced to your project scope.": "تُسعَّر حسب نطاق مشروعك.",
   "Contact Us": "تواصل معنا",
@@ -267,6 +264,7 @@
   "Primary": "التنقل الرئيسي",
   "Contact us about Custom ERP": "تواصل معنا بخصوص تخصيص النظام",
   "Contact us about White Label": "تواصل معنا بخصوص النظام بعلامتك التجارية",
-  "Contact us about On-Premises": "تواصل معنا بخصوص الاستضافة على خوادمك"
+  "Contact us about On-Premises": "تواصل معنا بخصوص الاستضافة على خوادمك",
+  "Every plan includes": "تشمل كل باقة"
  }
 }

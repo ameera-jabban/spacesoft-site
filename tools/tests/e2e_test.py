@@ -86,6 +86,13 @@ def test_pricing(b, base):
         check([b['id'] for b in boxes] == ['starter', 'business', 'pro'] and len({b['w'] for b in boxes}) == 1 and len({b['h'] for b in boxes}) == 1 and len({b['cta'] for b in boxes}) == 1, f'{L} equal cards, aligned CTAs {boxes}')
         check((boxes[0]['x'] > boxes[2]['x']) if lang == 'ar' else (boxes[0]['x'] < boxes[2]['x']), f'{L} Starter starts on the {"right" if lang == "ar" else "left"}')
         check(pg.locator('.ss-plan[data-plan=business] .btn-primary').count() == 1 and pg.locator('.ss-plan:not([data-plan=business]) .btn-ghost').count() == 2, f'{L} Business filled CTA, others outlined')
+        inc = pg.evaluate("[...document.querySelectorAll('.ss-plan')].map(c => [...c.querySelectorAll('.ss-plan-includes li')].map(l => l.textContent.trim()))")
+        check(len(inc) == 3 and all(len(x) == 5 and x == inc[0] for x in inc), f'{L} the same 5 inclusions inside every card {[len(x) for x in inc]}')
+        users = pg.evaluate("[...document.querySelectorAll('.ss-plan .ss-plan-users')].map(e => e.textContent)")
+        check([u.split()[1] if lang == 'ar' else u.split()[0] for u in users] == ['3', '8', '15'], f'{L} users included under the price {users}')
+        cards = pg.text_content('.ss-plans')
+        check(pg.locator('.ss-plans [data-price^=extra]').count() == 0 and all(w not in cards for w in ('Extra user', 'above 15', 'Up to 15', 'مستخدم إضافي', 'فوق 15', 'حتى 15')), f'{L} no extra-user pricing on the cards')
+        check(pg.locator('.ss-plan-details').count() == 0 and pg.evaluate("document.querySelector('.ss-plans').nextElementSibling.classList.contains('ss-trial')"), f'{L} separate inclusions block gone; 14-day trial bar under the grid')
         # solutions follow the plans directly
         check(pg.evaluate("document.querySelector('.ss-pr-plans').nextElementSibling.id") == 'solutions' and pg.locator('#solutions .ss-solution').count() == 3, f'{L} Enterprise Solutions right after the plans, 3 cards')
         checks = pg.text_content('.ss-checks')
