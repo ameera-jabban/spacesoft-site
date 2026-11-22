@@ -47,18 +47,10 @@ def errors_ok(pg):
     # aborted font requests are expected in the test sandbox
     return [e for e in pg.errors if 'net::ERR_FAILED' not in e and 'fonts.g' not in e]
 
-def calc(pg, **vals):
-    for k, v in vals.items():
-        if k == 'manufacturing': pg.set_checked('#calc-manufacturing', v)
-        else: pg.fill(f'#calc-{k}', str(v))
-    pg.wait_for_timeout(50)
-    return pg.evaluate("({plan: document.getElementById('calc-plan').textContent, total: document.getElementById('calc-total').textContent, renewal: document.getElementById('calc-renewal').textContent, onetime: document.getElementById('calc-onetime').textContent, commitment: document.getElementById('calc-commitment').hidden ? '' : document.getElementById('calc-commitment').textContent})")
-
 def click(pg, sel):
     # centre the element first so the fixed header never sits on top of it
     pg.locator(sel).first.evaluate("e => e.scrollIntoView({block: 'center'})"); pg.click(sel)
 
-def set_country(pg, c): pg.select_option('#pr-country', c); pg.wait_for_timeout(50)
 def set_cycle(pg, c): click(pg, f'label:has(input[name=pr-cycle][value={c}])'); pg.wait_for_timeout(50)
 
 def test_pricing(b, base):
@@ -69,55 +61,56 @@ def test_pricing(b, base):
         check(pg.evaluate('document.documentElement.lang') == lang, f'{L} pricing page lang')
         h1 = pg.text_content('h1')
         check(h1 == ('Clear pricing, room to grow' if lang == 'en' else 'أسعار واضحة، ومساحة لنمو أعمالك'), f'{L} heading: {h1}')
-        check(pg.locator(f'header a[href="{path}"]:not([data-lang-link])').count() == 0, f'{L} "Pricing" hidden from the header nav')
+        check(pg.locator(f'header nav[aria-label] a[href="{path}"]:not([data-lang-link])').count() == 2, f'{L} "Pricing" link in the header nav (desktop + mobile)')
         price = lambda k: pg.text_content(f'[data-price="{k}"]')
-        check([price('plan.starter'), price('plan.business'), price('plan.pro')] == ['$300', '$600', '$1,000'], f'{L} JO/AE annual plan prices')
-        set_country(pg, 'sy')
-        check([price('plan.starter'), price('plan.business'), price('plan.pro')] == ['$200', '$400', '$670'], f'{L} Syria annual plan prices')
+        plans = lambda: [price('plan.starter'), price('plan.business'), price('plan.pro')]
+        # Jordan list (src/data/pricing.json, list "jo_ae") for every visitor
+        cfg = json.load(open(os.path.join(ROOT, 'src', 'data', 'pricing.json'), encoding='utf-8'))
+        jo = {p['id']: p['annual'][cfg['countries']['jo']['list']] for p in cfg['plans']}
+        usd = lambda v: '${:,.0f}'.format(v) if v == int(v) else '${:,.2f}'.format(v)
+        want_a = [usd(jo[i]) for i in ('starter', 'business', 'pro')]
+        want_m = [usd(jo[i] / cfg['monthlyDivisor']) for i in ('starter', 'business', 'pro')]
+        check(plans() == want_a == ['$300', '$600', '$1,000'], f'{L} annual = Jordan list {plans()}')
+        # pricing UI only: the quote form keeps its own optional "Country" field for the visitor's details
+        body = pg.evaluate("[...document.querySelectorAll('main > section:not(#quote)')].map(s => s.textContent).join(' ')")
+        check(all(w not in body for w in ('Jordan', 'Syria', 'Emirates', 'الأردن', 'سوريا', 'الإمارات', 'Country', 'البلد')), f'{L} no country name or country prompt on the page')
+        check(pg.locator('main > section:not(#quote) select, #estimate, #calcForm, #addons-title, .ss-table').count() == 0, f'{L} country select, estimate and add-ons sections removed')
+        check(pg.is_visible('.ss-plan[data-plan=starter] [data-cycle-show=annual]') and ('Paid annually in advance' in body or 'يُدفع سنويًا مقدمًا' in body), f'{L} annual: paid annually in advance')
         set_cycle(pg, 'monthly')
-        check([price('plan.starter'), price('plan.business'), price('plan.pro'), price('addon.restaurant')] == ['$20', '$40', '$67', '$27'], f'{L} Syria monthly = annual / 10')
-        check(pg.input_value('#calc-country') == 'sy' and pg.is_checked('input[name=calc-cycle][value=monthly]'), f'{L} hero and calculator controls stay in sync')
-        check(pg.is_visible('[data-cycle-show=monthly]') and not pg.is_visible('.ss-cycle-note [data-cycle-show=annual]'), f'{L} monthly note shown (3-month commitment)')
-        check(pg.is_visible('[data-country-show=sy]') and price('impl.from') == '$100', f'{L} Syria implementation from $100 (remote)')
-        set_country(pg, 'ae'); set_cycle(pg, 'annual')
-        check(price('plan.pro') == '$1,000' and price('activation.van') == '$50' and price('impl.from') == '$300', f'{L} UAE uses the Jordan list')
-        check(pg.locator('.ss-soon .ss-badge').count() == 2 and pg.locator('.ss-soon [data-price]').count() == 0, f'{L} HR and CRM are "Coming Soon" with no price')
+        check(plans() == want_m == ['$30', '$60', '$100'], f'{L} monthly = annual / 10 {plans()}')
+        check(pg.is_visible('.ss-plan[data-plan=pro] .ss-per [data-cycle-show=monthly]') and not pg.is_visible('.ss-plan[data-plan=pro] .ss-per [data-cycle-show=annual]')
+              and pg.is_visible('.ss-plan[data-plan=pro] .ss-plan-terms [data-cycle-show=monthly]'), f'{L} period unit and payment text switch with the price')
+        set_cycle(pg, 'annual')
+        # cards: three, equal size, Business highlighted, CTAs aligned; Starter first (right in RTL)
+        boxes = pg.evaluate("[...document.querySelectorAll('.ss-plan')].map(e => { const r = e.getBoundingClientRect(), c = e.querySelector('.ss-plan-cta').getBoundingClientRect(); return {id: e.dataset.plan, x: r.x, w: Math.round(r.width), h: Math.round(r.height), cta: Math.round(c.bottom - r.bottom)} })")
+        check([b['id'] for b in boxes] == ['starter', 'business', 'pro'] and len({b['w'] for b in boxes}) == 1 and len({b['h'] for b in boxes}) == 1 and len({b['cta'] for b in boxes}) == 1, f'{L} equal cards, aligned CTAs {boxes}')
+        check((boxes[0]['x'] > boxes[2]['x']) if lang == 'ar' else (boxes[0]['x'] < boxes[2]['x']), f'{L} Starter starts on the {"right" if lang == "ar" else "left"}')
+        check(pg.locator('.ss-plan[data-plan=business] .btn-primary').count() == 1 and pg.locator('.ss-plan:not([data-plan=business]) .btn-ghost').count() == 2, f'{L} Business filled CTA, others outlined')
+        # solutions follow the plans directly
+        check(pg.evaluate("document.querySelector('.ss-pr-plans').nextElementSibling.id") == 'solutions' and pg.locator('#solutions .ss-solution').count() == 3, f'{L} Enterprise Solutions right after the plans, 3 cards')
         checks = pg.text_content('.ss-checks')
         check('hosting' not in checks.lower() and 'الاستضافة' not in checks and '"_note"' not in pg.content(), f'{L} hosting not promised while unapproved; no config notes published')
+        pg.close()
 
-        # calculator — acceptance values
-        set_country(pg, 'jo')
-        r = calc(pg, users=5); check(r['total'] == '$420' and ('Starter' in r['plan'] or 'البداية' in r['plan']), f'{L} JO 5 users = $420 Starter ({r["total"]})')
-        r = calc(pg, users=8); check(r['total'] == '$600' and ('Business' in r['plan'] or 'الأعمال' in r['plan']), f'{L} JO 8 users = $600 Business (tie -> larger)')
-        r = calc(pg, users=15); check(r['total'] == '$1,000', f'{L} JO 15 users = $1,000')
-        r = calc(pg, users=16); check(r['total'] == '$1,050', f'{L} JO 16 users = $1,050')
-        r = calc(pg, users=3, cashiers=1); check(r['total'] == '$400' and ('$300' in r['onetime']), f'{L} JO 3 users + POS = $400; implementation shown "from $300" outside the total')
-        set_country(pg, 'sy')
-        r = calc(pg, users=4, cashiers=0, restaurants=2); check(r['total'] == '$780', f'{L} SY 4 users + 2 restaurant branches = $780 ({r["total"]})')
-        set_country(pg, 'jo')
-        r = calc(pg, users=5, restaurants=0, vans=3); check(r['total'] == '$720' and ('Confirmed in your quote' in r['onetime'] or 'يُحدَّد في عرض السعر' in r['onetime']), f'{L} van activation listed once, pending, not in total ($720)')
-        set_cycle(pg, 'monthly'); r = calc(pg, vans=0)
-        check(r['total'] == '$42' and r['commitment'] != '', f'{L} monthly estimate $42 with 3-month commitment line ({r["commitment"]})')
-        set_cycle(pg, 'annual')
-        for bad in ('-1', '2.5', ''):
-            pg.fill('#calc-reps', bad); pg.wait_for_timeout(50)
-            check(pg.get_attribute('#calc-reps', 'aria-invalid') == 'true' and pg.is_visible('#calc-reps-err') and pg.text_content('#calc-total') == '—', f'{L} rejects reps="{bad}"')
-        pg.fill('#calc-reps', '0'); pg.fill('#calc-users', '0'); pg.wait_for_timeout(50)
-        check(pg.get_attribute('#calc-users', 'aria-invalid') == 'true', f'{L} rejects 0 ERP users')
-        pg.fill('#calc-users', '5'); click(pg, '#calcForm [data-step="1"]'); pg.wait_for_timeout(50)
-        check(pg.input_value('#calc-users') == '6' and pg.text_content('#calc-total') == '$480', f'{L} stepper + recalculation ($480)')
+        # a stale country in storage or the URL never changes the prices
+        pg = new_page(b, base); pg.goto(base + path); pg.evaluate("localStorage.setItem('ss_country','sy')")
+        pg.goto(base + path + '?country=sy&market=sy'); pg.wait_for_timeout(200)
+        check(plans() == ['$300', '$600', '$1,000'], f'{L} stored/URL country "sy" ignored {plans()}')
 
-        # estimate -> quote request
-        click(pg, '[data-quote=estimate]'); pg.wait_for_timeout(500)
-        check(pg.is_visible('#f-estimate-box') and pg.input_value('#f-type') == 'quote', f'{L} estimate attached to the quote form')
+        # plan card -> quote request carries plan and cycle
+        set_cycle(pg, 'monthly'); click(pg, '[data-quote=plan][data-plan-id=business]'); pg.wait_for_timeout(500)
+        check(pg.is_visible('#f-estimate-box') and pg.input_value('#f-type') == 'quote', f'{L} selected plan attached to the quote form')
         pg.fill('#f-name', 'Test Person'); pg.fill('#f-email', 'test@example.com')
         click(pg, '#demoSubmit'); pg.wait_for_timeout(600)
         d = pg.posts[-1] if pg.posts else {}
         check(d.get('requestType') == 'quote' and d.get('subject', '').startswith('New Quote Request'), f'{L} quote request type + subject: {d.get("subject")}')
-        check(d.get('estimateCountry') == 'Jordan' and d.get('estimateBilling', '').startswith('Annual') and d.get('estimatePlan') == 'Starter'
-              and 'ERP users: 6' in d.get('estimateQuantities', '') and d.get('estimateTotal') == '$480' and 'Starter' in d.get('estimateSummary', ''),
-              f'{L} estimate fields arrive: {d.get("estimateCountry")}, {d.get("estimateBilling")}, {d.get("estimatePlan")}, {d.get("estimateTotal")}')
-        check(pg.is_visible('#formOk') and not pg.is_visible('#f-estimate-box') and pg.input_value('#f-type') == 'quote', f'{L} success clears the estimate, keeps request type')
+        check(d.get('estimatePlan') == 'Business' and d.get('estimateBilling', '').startswith('Monthly') and d.get('estimateTotal') == '$60'
+              and d.get('estimateCountry') == 'Jordan price list', f'{L} plan fields arrive: {d.get("estimatePlan")}, {d.get("estimateBilling")}, {d.get("estimateTotal")}, {d.get("estimateCountry")}')
+        check(pg.is_visible('#formOk') and not pg.is_visible('#f-estimate-box') and pg.input_value('#f-type') == 'quote', f'{L} success clears the plan, keeps request type')
+        set_cycle(pg, 'annual'); click(pg, '[data-quote=plan][data-plan-id=starter]'); pg.wait_for_timeout(300)
+        e = json.loads(pg.input_value('#f-estimate'))
+        check(e['plan'] == 'Starter' and e['cycle'].startswith('Annual') and e['total'] == '$300', f'{L} annual Starter CTA: {e["plan"]}, {e["cycle"]}, {e["total"]}')
+        click(pg, '#f-estimate-remove')
 
         # solution cards -> multi-select
         click(pg, '[data-solution="White Label"]'); pg.wait_for_timeout(300); click(pg, '[data-solution="On-Premises"]'); pg.wait_for_timeout(300)

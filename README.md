@@ -26,8 +26,8 @@ src/                         ← edit here
 config.js                    Web3Forms access key (one place)
 assets/
   js/site.js                 menu, WhatsApp widget, video loader, demo/quote form
-  js/pricing-engine.js       subscription estimate maths (no DOM; used by the page and the tests)
-  js/pricing.js              pricing page UI
+  js/pricing-engine.js       subscription estimate maths (no DOM; tests only, the page no longer loads it)
+  js/pricing.js              pricing page UI (monthly/annual switch, plan prices; one fixed price list: MARKET = 'jo', same as SITE_MARKET in tools/build.py)
   og-image-{en,ar}.jpg       1200×630 social images (tools/make_og_images.py)
   …                          logo (WebP + PNG), screenshots, video, poster
 tools/
@@ -66,7 +66,7 @@ npm run test:e2e   # needs: pip install playwright && playwright install chromiu
 
 Both forms post to Web3Forms, which emails each request to info@spacesofterp.com
 (set `web3formsKey` in `config.js`). The form sends `requestType` (`demo`, `quote`, `custom` or `trial`),
-the visitor's details, and, from the pricing page, the selected solutions and the attached estimate.
+the visitor's details, and, from the pricing page, the selected solutions and the selected plan and billing cycle.
 Spam protection is the Web3Forms `botcheck` honeypot. If spam appears, enable hCaptcha in the Web3Forms
 dashboard, add the hCaptcha widget to `src/partials/request-form.html`, and allow
 `https://hcaptcha.com https://*.hcaptcha.com` in `CSP_SOURCES` (script-src, frame-src, connect-src).
