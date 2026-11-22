@@ -37,11 +37,11 @@ PAGES = [
                'ar': 'نظام ERP ويب ثنائي اللغة للمحاسبة والمبيعات والمشتريات والمخزون والتصنيع، مع تعدد الشركات والفروع والعملات ورقابة مالية كاملة.'},
          jsonld=('organization', 'software', 'faq')),
     dict(id='pricing', src='pricing.html', path='pricing/', sitemap=True, priority='0.9', reqtype='quote',
-         scripts=('js/pricing-engine.js', 'js/pricing.js'),
-         title={'en': 'Pricing — Space Soft ERP plans, add-ons and estimate',
-                'ar': 'الأسعار — باقات Space Soft ERP والإضافات وحاسبة التقدير'},
-         desc={'en': 'Space Soft ERP plans from $30/month: Starter, Business and Pro, add-ons, and a subscription estimate for Jordan, the UAE and Syria.',
-               'ar': 'باقات Space Soft ERP تبدأ من 30 دولاراً شهرياً: البداية والأعمال والمحترفة، مع الإضافات وحاسبة تقدير للأردن والإمارات وسوريا.'},
+         scripts=('js/pricing.js',),
+         title={'en': 'Pricing — Space Soft ERP plans',
+                'ar': 'الأسعار — باقات Space Soft ERP'},
+         desc={'en': 'Space Soft ERP plans from $30/month: Starter, Business and Pro, billed monthly or annually, plus Custom ERP, White Label and On-Premises options.',
+               'ar': 'باقات Space Soft ERP تبدأ من 30 دولاراً شهرياً: البداية والأعمال والمحترفة بدفع شهري أو سنوي، مع خيارات التخصيص والعلامة الخاصة والتشغيل على خوادمك.'},
          jsonld=('organization',)),
     # Legal pages are written per language (src/<name>.<lang>.html). DRAFT: noindex + out of the sitemap
     # until reviewed — then set noindex=False, sitemap=True.
@@ -193,6 +193,10 @@ LANG_ACTIVE = {'desktop': 'bg-primary text-primary-foreground shadow-[0_0_12px_o
                'other': 'text-muted-foreground hover:text-foreground'}
 
 PRICING = json.loads(read('src', 'data', 'pricing.json'))
+# The pricing page shows ONE price list to every visitor (no country choice). Keep in sync with MARKET in assets/js/pricing.js.
+SITE_MARKET = 'jo'
+assert SITE_MARKET in PRICING['countries'], SITE_MARKET
+assert PRICING['currency'] == 'USD', 'page copy and fmt_usd assume US dollars'
 FLAGS = {
     'hosting': lambda: bool(PRICING['hosting']['includedInPlans']),
     'promo': lambda: bool(PRICING['launchPromo']['enabled']),
@@ -211,8 +215,8 @@ def fmt_usd(amount):
     return f'${cents // 100:,}' if cents % 100 == 0 else f'${cents / 100:,.2f}'
 
 def price_token(key):
-    """Static (no-JS) prices for the default country and cycle; pricing.js updates [data-price] on change."""
-    lst = PRICING['countries'][PRICING['defaultCountry']]['list']
+    """Static (no-JS) prices for SITE_MARKET and the default cycle; pricing.js updates [data-price] on change."""
+    lst = PRICING['countries'][SITE_MARKET]['list']
     div = 1 if PRICING['defaultCycle'] == 'annual' else PRICING['monthlyDivisor']
     kind, _, ident = key.partition('.')
     if kind == 'plan': v = next(x for x in PRICING['plans'] if x['id'] == ident)['annual'][lst] / div
