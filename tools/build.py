@@ -243,6 +243,8 @@ def render(page, lang, ar, css, partials):
     doc = doc.replace('@@pricing-json@@', json.dumps(public_json(PRICING), ensure_ascii=False, separators=(',', ':')).replace('</', '<\\/'))
     doc = doc.replace('@@trial-href@@', PRICING['trial']['url'] or '#quote').replace('@@trial-days@@', str(PRICING['trial']['days']))
     doc = re.sub(r'@@price:([\w.]+)@@', lambda m: price_token(m.group(1)), doc)
+    # users included, read from the plan data ("3 users included"; Arabic via src/i18n/ar.json)
+    doc = re.sub(r'@@users:(\w+)@@', lambda m: f"{next(x for x in PRICING['plans'] if x['id'] == m.group(1))['users']} users included", doc)
     scripts = ''.join(f'<script src="{asset_url(js)}" defer></script>\n' for js in page.get('scripts', ()))
     doc = doc.replace('<!--@page-scripts-->\n', scripts)
     is_home = page['path'] == '' and page.get('home_page', True)
