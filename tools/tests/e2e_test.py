@@ -69,8 +69,7 @@ def test_pricing(b, base):
         check(pg.evaluate('document.documentElement.lang') == lang, f'{L} pricing page lang')
         h1 = pg.text_content('h1')
         check(h1 == ('Clear pricing, room to grow' if lang == 'en' else 'أسعار واضحة، ومساحة لنمو أعمالك'), f'{L} heading: {h1}')
-        nav = pg.locator('header nav[aria-label] a[aria-current=page]').first
-        check(nav.count() == 1 and nav.get_attribute('href') == path, f'{L} "Pricing" nav link marked current')
+        check(pg.locator(f'header a[href="{path}"]:not([data-lang-link])').count() == 0, f'{L} "Pricing" hidden from the header nav')
         price = lambda k: pg.text_content(f'[data-price="{k}"]')
         check([price('plan.starter'), price('plan.business'), price('plan.pro')] == ['$300', '$600', '$1,000'], f'{L} JO/AE annual plan prices')
         set_country(pg, 'sy')
